@@ -43,6 +43,11 @@ public class FileUtils {
     }
 
     public static void moveFile(File rom, File newRom) {
+        if (newRom.exists()) {
+            log.severe(() -> "Could not move file '" + rom + "' to '" + newRom + "', file exists");
+            return;
+        }
+
         boolean renameSucceed = rom.renameTo(newRom);
         if (!renameSucceed) {
             log.severe(() -> "Could not move file '" + rom + "' to '" + newRom + "'");

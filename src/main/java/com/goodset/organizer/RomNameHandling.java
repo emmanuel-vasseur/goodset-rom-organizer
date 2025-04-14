@@ -1,4 +1,7 @@
-package com.goodset.organizer.rom;
+package com.goodset.organizer;
+
+import com.goodset.organizer.config.RomTypeLoader;
+import com.goodset.organizer.config.RomTypeMapping;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -29,17 +32,20 @@ public class RomNameHandling {
     }
 
     public String replaceRomTypes(String romName) {
-        String newRomName = romName;
-        for (RomTypeFileMapping mapping : RomTypeLoader.ROM_TYPE_FILE_MAPPINGS) {
-            newRomName = newRomName.replace(mapping.getRomTypeExpression(), mapping.getRomTypeReplacement());
+        String newRomName = RomTypeLoader.ROM_TRANSLATION_TYPE_MAPPINGS.replaceAllTranslationTypes(romName);
+
+        for (RomTypeMapping mapping : RomTypeLoader.ROM_TYPE_MAPPINGS) {
+            newRomName = newRomName.replace(mapping.getTypeToken(), mapping.getTypeTranslation());
         }
         return newRomName;
     }
 
     public boolean hasUnknownRomTypes(String romName) {
-        String cleanedRomName = romName;
-        for (RomTypeFileMapping mapping : RomTypeLoader.ROM_TYPE_FILE_MAPPINGS) {
-            cleanedRomName = cleanedRomName.replace(mapping.getRomTypeExpression(), "");
+        String translationTypeRegex = RomTypeLoader.ROM_TRANSLATION_TYPE_MAPPINGS.getTranslationTypeRegex();
+        String cleanedRomName = romName.replaceAll(translationTypeRegex, "");
+
+        for (RomTypeMapping mapping : RomTypeLoader.ROM_TYPE_MAPPINGS) {
+            cleanedRomName = cleanedRomName.replace(mapping.getTypeToken(), "");
         }
         for (String romType : RomTypeLoader.NOT_REPLACED_ROM_TYPES) {
             cleanedRomName = cleanedRomName.replace(romType, "");

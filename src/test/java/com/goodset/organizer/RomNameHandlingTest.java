@@ -1,4 +1,4 @@
-package com.goodset.organizer.rom;
+package com.goodset.organizer;
 
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -46,10 +46,26 @@ class RomNameHandlingTest {
             assertThat(newRomName).isEqualTo(expectedRomName);
         }
 
+        @ParameterizedTest
+        @CsvSource(delimiter = '|', value = {
+                "Ax Battler - A Legend of Golden Axe [T+Fre20060926_Rysley].gg|Ax Battler - A Legend of Golden Axe [French Translation - 20060926_Rysley].gg",
+                "Crystal Warriors [T-Fre].gg|Crystal Warriors [French Older Translation].gg",
+                "Crystal Warriors [T+Fre.99_Asmodeath].gg|Crystal Warriors [French Translation - .99_Asmodeath].gg",
+                "Shining Force Gaiden - Final Conflict [T-Eng].gg|Shining Force Gaiden - Final Conflict [English Older Translation].gg",
+                "Phantasy Star Gaiden [T+Bra_CBT].gg|Phantasy Star Gaiden [Brazilian Translation - CBT].gg",
+                "Megaman [T+Ger1.00_Star-trans].gg|Megaman [German Translation - 1.00_Star-trans].gg",
+                "Ax Battler - A Legend of Golden Axe [T+Spa100_pkt].gg|Ax Battler - A Legend of Golden Axe [Spanish Translation - 100_pkt].gg",
+                "Shinobi II - The Silent Fury [T+Rusbeta3_Lupus].gg|Shinobi II - The Silent Fury [Russian Translation - beta3_Lupus].gg",
+        })
+        void replaceAllRomTranslationType(String romName, String expectedRomName) {
+            String newRomName = romNameHandling.replaceRomTypes(romName);
+            assertThat(newRomName).isEqualTo(expectedRomName);
+        }
+
         @Test
         void replaceMultipleDifferentRomTypes() {
-            String newRomName = romNameHandling.replaceRomTypes("Donald Duck no Yottsu no Hihou (J) [t2][hI].gg");
-            assertThat(newRomName).isEqualTo("Donald Duck no Yottsu no Hihou (Japan) [Training 2][Hack I].gg");
+            String newRomName = romNameHandling.replaceRomTypes("Ax Battler - A Legend of Golden Axe (UE) (V2.4) [T+Fre][a1].gg");
+            assertThat(newRomName).isEqualTo("Ax Battler - A Legend of Golden Axe (Europe, USA) (V2.4) [French Translation][Alternate 1].gg");
         }
 
         @Test
@@ -60,8 +76,8 @@ class RomNameHandlingTest {
 
         @Test
         void replaceMultipleTimesSameRomType() {
-            String newRomName = romNameHandling.replaceRomTypes("Jang Pung II [o1][o2].gg");
-            assertThat(newRomName).isEqualTo("Jang Pung II [OverDump 1][OverDump 2].gg");
+            String newRomName = romNameHandling.replaceRomTypes("Jang Pung II [o1][o2][T-Fre][T+Fre].gg");
+            assertThat(newRomName).isEqualTo("Jang Pung II [OverDump 1][OverDump 2][French Older Translation][French Translation].gg");
         }
 
     }
@@ -98,6 +114,20 @@ class RomNameHandlingTest {
 
         @ParameterizedTest
         @ValueSource(strings = {
+                "Crystal Warriors [T-Fre].gg",
+                "Crystal Warriors [T+Fre.99_Asmodeath].gg",
+                "Phantasy Star Gaiden [T+Bra_CBT].gg",
+                "Megaman [T+Ger1.00_Star-trans].gg",
+                "Ax Battler - A Legend of Golden Axe [T+Spa100_pkt].gg",
+                "Shinobi II - The Silent Fury [T+Rusbeta3_Lupus].gg",
+        })
+        void shouldNotHaveUnknownRomTypes_WhenRomName_Contains_KnownRomTranslationTypeMapping(String romName) {
+            boolean hasUnknownRomTypes = romNameHandling.hasUnknownRomTypes(romName);
+            assertThat(hasUnknownRomTypes).isEqualTo(false);
+        }
+
+        @ParameterizedTest
+        @ValueSource(strings = {
                 "James Bond 007 - The Duel [!].gg",
                 "Taz in Escape from Mars - Star Wars Text (Hack).gg",
                 "Double Dragon (Prototype).gg",
@@ -124,7 +154,7 @@ class RomNameHandlingTest {
 
         @ParameterizedTest
         @ValueSource(strings = {
-                "Woody Pop (V1.1).gg",
+                "Woody Pop (V1_1).gg",
                 "Sports Trivia (Prototype-Mar 09, 1995).gg",
                 "Olympic Gold - Barcelona '92 (M9).gg",
                 "Asterix and the Secret Mission (M2).gg",
