@@ -1,0 +1,26 @@
+[a;[Alternate ;
+[b;[BadDump ;
+[o;[OverDump ;
+[t;[Training ;
+[h;[Hack ;
+[S];[MasterSystem Mode];
+
+(PD);(Public Domain);
+
+(JE);(Europe, Japan);
+(JU);(USA, Japan);
+(E);(Europe);
+(U);(USA);
+(UE);(Europe, USA);
+(UB);(USA, Brazil);
+(EB);(Europe, Brazil);
+
+(J);(Japan);
+(JK);(Japan, Korea);
+(K);(Korea);
+(T);(Taiwan);
+
+(JUE);(World);
+(JUEB);(World);
+(JEB);(World);
+(UEB);(World);
