@@ -1,13 +1,14 @@
-package com.goodset.organizer.util;
+package com.recalbox.goodset.organizer.util;
 
 import lombok.experimental.UtilityClass;
 import lombok.extern.java.Log;
 
-import java.io.File;
-import java.io.FileFilter;
+import java.io.*;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Stream;
 
+import static java.nio.charset.StandardCharsets.UTF_8;
 import static java.util.Objects.requireNonNull;
 
 @Log
@@ -59,5 +60,11 @@ public class FileUtils {
         if (!directoryCreatedOrAlreadyExists) {
             log.severe(() -> "Could not create directory '" + gameDirectory + "'");
         }
+    }
+
+    public static Stream<String> readLines(InputStream romTypeMappingsInputStream) {
+        return new BufferedReader(new InputStreamReader(romTypeMappingsInputStream, UTF_8))
+                .lines()
+                .filter(line -> !line.isEmpty());
     }
 }

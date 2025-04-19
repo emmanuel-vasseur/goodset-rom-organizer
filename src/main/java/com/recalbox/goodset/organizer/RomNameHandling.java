@@ -1,9 +1,12 @@
-package com.goodset.organizer;
+package com.recalbox.goodset.organizer;
 
-import com.goodset.organizer.config.RomTypeLoader;
-import com.goodset.organizer.config.RomTypeMapping;
+import com.recalbox.goodset.organizer.config.RomTypeLoader;
+import com.recalbox.goodset.organizer.config.RomTypeMapping;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import static java.util.Collections.emptyList;
@@ -40,7 +43,18 @@ public class RomNameHandling {
         return newRomName;
     }
 
-    public boolean hasUnknownRomTypes(String romName) {
+    public List<String> hasUnknownRomTypes(String romName) {
+        String cleanedRomName = removeKnownRomTypes(romName);
+
+        Matcher romTypeMatcher = Pattern.compile("[(\\[]([^(\\[]+)[)\\]]").matcher(cleanedRomName);
+        List<String> unknownRomTypes = new ArrayList<>();
+        while (romTypeMatcher.find()) {
+            unknownRomTypes.add(romTypeMatcher.group(1));
+        }
+        return unknownRomTypes;
+    }
+
+    private String removeKnownRomTypes(String romName) {
         String translationTypeRegex = RomTypeLoader.ROM_TRANSLATION_TYPE_MAPPINGS.getTranslationTypeRegex();
         String cleanedRomName = romName.replaceAll(translationTypeRegex, "");
 
@@ -53,6 +67,6 @@ public class RomNameHandling {
         for (String romTypeRegex : RomTypeLoader.NOT_REPLACED_ROM_TYPES_REGEX) {
             cleanedRomName = cleanedRomName.replaceAll(romTypeRegex, "");
         }
-        return cleanedRomName.contains("[") || cleanedRomName.contains("(");
+        return cleanedRomName;
     }
 }

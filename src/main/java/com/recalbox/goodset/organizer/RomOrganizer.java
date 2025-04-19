@@ -1,10 +1,14 @@
-package com.goodset.organizer;
+package com.recalbox.goodset.organizer;
 
-import com.goodset.organizer.util.FileUtils;
+import com.recalbox.goodset.organizer.util.FileUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.UncheckedIOException;
+import java.util.AbstractMap.SimpleEntry;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -13,27 +17,25 @@ import java.util.stream.Collectors;
 public class RomOrganizer {
 
     private static final String SUB_DIRECTORY_FOR_LOWER_QUALITY_ROMS = "Other versions";
+    public static final String GAMELIST_FILENAME = "gamelist.xml";
 
     private final RomNameHandling romNameHandling = new RomNameHandling();
     private final File romDirectory;
 
-    public static RomOrganizer init(String... commandLineArguments) {
-        String romDirectory = commandLineArguments.length > 0 ? commandLineArguments[0] : ".";
-        return new RomOrganizer(new File(romDirectory));
-    }
-
     public void listUnknownRomTypes() {
         List<File> romFiles = FileUtils.listFiles(romDirectory);
-        List<String> unknownRomTypes = romFiles.stream()
-                .map(File::getName)
-                .filter(romNameHandling::hasUnknownRomTypes)
+        List<SimpleEntry<String, List<String>>> romNamesWithUnknownTypes = romFiles.stream()
+                .map(rom -> new SimpleEntry<>(rom.getName(), romNameHandling.hasUnknownRomTypes(rom.getName())))
+                .filter(romAttributes -> !romAttributes.getValue().isEmpty())
                 .collect(Collectors.toList());
 
-        if (unknownRomTypes.isEmpty()) {
-            log.info(() -> "No unknown rom types found in '" + romDirectory + "'");
+        if (romNamesWithUnknownTypes.isEmpty()) {
+            log.info(() -> "** Result OK, No unknown rom types found in '" + romDirectory + "' files **");
         } else {
-            log.info(() -> "Unknown rom types found in '" + romDirectory + "':");
-            unknownRomTypes.forEach(log::info);
+            log.warning(() -> "******** Unknown rom types found in '" + romDirectory + "' files ********");
+            romNamesWithUnknownTypes.forEach(romAttributes -> log.warning(
+                    romAttributes.getKey() + " : " + String.join(", ", romAttributes.getValue())
+            ));
         }
     }
 
@@ -44,7 +46,9 @@ public class RomOrganizer {
 
     private void renameRom(File rom) {
         String newName = romNameHandling.replaceRomTypes(rom.getName());
-        FileUtils.renameFileName(rom, newName);
+        if (!rom.getName().equals(newName)) {
+            FileUtils.renameFileName(rom, newName);
+        }
     }
 
     public void groupRomsByGame() {
@@ -66,6 +70,14 @@ public class RomOrganizer {
     private void moveRomToGameDirectory(File rom) {
         String game = romNameHandling.getGame(rom.getName());
         FileUtils.moveToSubDirectory(rom, game);
+    }
+
+    List<String> loadGameList() {
+        try (FileInputStream gameListInputStream = new FileInputStream(new File(romDirectory, GAMELIST_FILENAME))) {
+            return FileUtils.readLines(gameListInputStream).collect(Collectors.toList());
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
+        }
     }
 
 }

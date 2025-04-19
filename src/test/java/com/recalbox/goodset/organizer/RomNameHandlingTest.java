@@ -1,4 +1,4 @@
-package com.goodset.organizer;
+package com.recalbox.goodset.organizer;
 
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -108,8 +108,8 @@ class RomNameHandlingTest {
                 "Jang Pung II [S].gg",
         })
         void shouldNotHaveUnknownRomTypes_WhenRomName_Contains_KnownRomTypeMapping(String romName) {
-            boolean hasUnknownRomTypes = romNameHandling.hasUnknownRomTypes(romName);
-            assertThat(hasUnknownRomTypes).isEqualTo(false);
+            List<String> unknownRomTypes = romNameHandling.hasUnknownRomTypes(romName);
+            assertThat(unknownRomTypes).isEmpty();
         }
 
         @ParameterizedTest
@@ -122,8 +122,8 @@ class RomNameHandlingTest {
                 "Shinobi II - The Silent Fury [T+Rusbeta3_Lupus].gg",
         })
         void shouldNotHaveUnknownRomTypes_WhenRomName_Contains_KnownRomTranslationTypeMapping(String romName) {
-            boolean hasUnknownRomTypes = romNameHandling.hasUnknownRomTypes(romName);
-            assertThat(hasUnknownRomTypes).isEqualTo(false);
+            List<String> unknownRomTypes = romNameHandling.hasUnknownRomTypes(romName);
+            assertThat(unknownRomTypes).isEmpty();
         }
 
         @ParameterizedTest
@@ -135,8 +135,8 @@ class RomNameHandlingTest {
                 "Sonic Drift (Sample).gg",
         })
         void shouldNotHaveUnknownRomTypes_WhenRomName_Contains_KnownNotReplacedRomTypes(String romName) {
-            boolean hasUnknownRomTypes = romNameHandling.hasUnknownRomTypes(romName);
-            assertThat(hasUnknownRomTypes).isEqualTo(false);
+            List<String> unknownRomTypes = romNameHandling.hasUnknownRomTypes(romName);
+            assertThat(unknownRomTypes).isEmpty();
         }
 
         @ParameterizedTest
@@ -148,22 +148,22 @@ class RomNameHandlingTest {
                 "Xaropinho (Mappy Hack).gg",
         })
         void shouldNotHaveUnknownRomTypes_WhenRomName_Contains_KnownNotRegexReplacedRomTypes(String romName) {
-            boolean hasUnknownRomTypes = romNameHandling.hasUnknownRomTypes(romName);
-            assertThat(hasUnknownRomTypes).isEqualTo(false);
+            List<String> unknownRomTypes = romNameHandling.hasUnknownRomTypes(romName);
+            assertThat(unknownRomTypes).isEmpty();
         }
 
         @ParameterizedTest
-        @ValueSource(strings = {
-                "Woody Pop (V1_1).gg",
-                "Sports Trivia (Prototype-Mar 09, 1995).gg",
-                "Olympic Gold - Barcelona '92 (M9).gg",
-                "Asterix and the Secret Mission (M2).gg",
-                "Xaropinho (Mappy-Hack).gg",
-                "Zool (with Invinciblity).gg",
+        @CsvSource(delimiter = '|', value = {
+                "Woody Pop (V1_1).gg|V1_1",
+                "Sports Trivia (Prototype-Mar 09, 1995).gg|Prototype-Mar 09, 1995",
+                "Olympic Gold - Barcelona '92 (M9).gg|M9",
+                "Asterix and the Secret Mission (M2).gg|M2",
+                "Xaropinho (Mappy-Hack).gg|Mappy-Hack",
+                "Zool (with Invinciblity).gg|with Invinciblity",
         })
-        void shouldHaveUnknownRomTypes_WhenRomName_Contains_UnknownRomType(String romName) {
-            boolean hasUnknownRomTypes = romNameHandling.hasUnknownRomTypes(romName);
-            assertThat(hasUnknownRomTypes).isEqualTo(true);
+        void shouldHaveUnknownRomTypes_WhenRomName_Contains_UnknownRomType(String romName, String expectedUnknownRomType) {
+            List<String> unknownRomTypes = romNameHandling.hasUnknownRomTypes(romName);
+            assertThat(unknownRomTypes).containsExactly(expectedUnknownRomType);
         }
 
     }

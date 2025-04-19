@@ -1,17 +1,14 @@
-package com.goodset.organizer.config;
+package com.recalbox.goodset.organizer.config;
 
+import com.recalbox.goodset.organizer.util.FileUtils;
 import lombok.experimental.UtilityClass;
 
-import java.io.BufferedReader;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
-import static java.nio.charset.StandardCharsets.UTF_8;
 
 @UtilityClass
 public class RomTypeLoader {
@@ -56,9 +53,7 @@ public class RomTypeLoader {
 
     private static Stream<String> getResourceLines(String resourcePath) {
         InputStream romTypeMappingsInputStream = RomTypeLoader.class.getResourceAsStream(resourcePath);
-        return new BufferedReader(new InputStreamReader(romTypeMappingsInputStream, UTF_8))
-                .lines()
-                .filter(line -> !line.isEmpty());
+        return FileUtils.readLines(romTypeMappingsInputStream);
     }
 
 }
