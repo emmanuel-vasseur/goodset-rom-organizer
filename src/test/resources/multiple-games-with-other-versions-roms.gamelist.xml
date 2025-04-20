@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<gameList>
+    <provider>
+        <System>Game Gear</System>
+        <software>Skraper</software>
+        <database>ScreenScraper.fr</database>
+        <web>http://www.screenscraper.fr</web>
+    </provider>
+    <game id="12983" source="ScreenScraper.fr">
+        <path>./Aerial Assault/Aerial Assault (Japan) (V1.1) [!].gg</path>
+        <name>Aerial Assault (Japan) (V1.1) [!] [JP](Best)</name>
+        <desc>Aerial Assault sur Game Gear vous place dans le cockpit d'un F-15C Eagle, avec pour objectif d'éliminer
+            tout assaillant environnant. Qu'il s'agisse de chasseurs, de jeeps, ou encore de sous-marins, certains de
+            vos ennemis vous permettront d'augmenter la force de frappe de votre appareil grâce à quelques bonus.
+        </desc>
+        <rating>0.65</rating>
+        <releasedate>19920605T000000</releasedate>
+        <developer>Sanritsu Denki</developer>
+        <publisher>SEGA</publisher>
+        <genre>Shoot'em Up-Shoot'em up / Horizontal</genre>
+        <players>1-2</players>
+        <hash>04FE6DDE</hash>
+        <image>./media/images/Aerial Assault/Aerial Assault (Japan) (V1.1) [!].png</image>
+        <genreid>260</genreid>
+    </game>
+    <game id="12983" source="ScreenScraper.fr">
+        <path>./Aerial Assault/Aerial Assault (World) (V1.0) [!].gg</path>
+        <name>Aerial Assault (World) (V1.0) [!] [WOR]</name>
+        <desc>Aerial Assault sur Game Gear vous place dans le cockpit d'un F-15C Eagle, avec pour objectif d'éliminer
+            tout assaillant environnant. Qu'il s'agisse de chasseurs, de jeeps, ou encore de sous-marins, certains de
+            vos ennemis vous permettront d'augmenter la force de frappe de votre appareil grâce à quelques bonus.
+        </desc>
+        <rating>0.65</rating>
+        <releasedate>19920101T000000</releasedate>
+        <developer>Sanritsu Denki</developer>
+        <publisher>SEGA</publisher>
+        <genre>Shoot'em Up-Shoot'em up / Horizontal</genre>
+        <players>1-2</players>
+        <hash>3E549B7A</hash>
+        <image>./media/images/Aerial Assault/Aerial Assault (World) (V1.0) [!].png</image>
+        <genreid>260</genreid>
+    </game>
+    <game id="12983" source="ScreenScraper.fr">
+        <path>./Aerial Assault/Other versions/Aerial Assault (World) (V1.0) [BadDump 1].gg</path>
+        <name>Aerial Assault (World) (V1.0) [BadDump 1] [WOR]</name>
+        <desc>Aerial Assault sur Game Gear vous place dans le cockpit d'un F-15C Eagle, avec pour objectif d'éliminer
+            tout assaillant environnant. Qu'il s'agisse de chasseurs, de jeeps, ou encore de sous-marins, certains de
+            vos ennemis vous permettront d'augmenter la force de frappe de votre appareil grâce à quelques bonus.
+        </desc>
+        <rating>0.65</rating>
+        <releasedate>19920101T000000</releasedate>
+        <developer>Sanritsu Denki</developer>
+        <publisher>SEGA</publisher>
+        <genre>Shoot'em Up-Shoot'em up / Horizontal</genre>
+        <players>1-2</players>
+        <hash>899515D0</hash>
+        <image>./media/images/Aerial Assault/Aerial Assault (World) (V1.0) [!].png</image>
+        <genreid>260</genreid>
+    </game>
+    <game id="12860" source="ScreenScraper.fr">
+        <path>./Aladdin/Aladdin (Japan) [!].gg</path>
+        <name>Disney's Aladdin (Japan) [!] [JP]</name>
+        <desc>Reprenant les différentes séquences du film d'animation de Disney, Aladdin sur Game Gear permet de
+            retrouver tous les personnages de l'histoire. Ce jeu de plates-formes propose effectivement de suivre
+            Aladdin des rues d'Agrabah aux couloirs du palais royal en passant bien sûr par la célèbre caverne aux
+            merveilles. Le Génie est aussi de la partie et permet de gagner des bonus.
+        </desc>
+        <rating>0.7</rating>
+        <releasedate>19940325T000000</releasedate>
+        <developer>Sims</developer>
+        <publisher>SEGA</publisher>
+        <genre>Plateforme</genre>
+        <players>1</players>
+        <hash>770E95E1</hash>
+        <image>./media/images/Aladdin/Aladdin (Japan) [!].png</image>
+        <genreid>257</genreid>
+    </game>
+    <game id="12860" source="ScreenScraper.fr">
+        <path>./Aladdin/Other versions/Aladdin (Japan) [BadDump 1].gg</path>
+        <name>Disney's Aladdin (Japan) [BadDump 1] [JP]</name>
+        <desc>Reprenant les différentes séquences du film d'animation de Disney, Aladdin sur Game Gear permet de
+            retrouver tous les personnages de l'histoire. Ce jeu de plates-formes propose effectivement de suivre
+            Aladdin des rues d'Agrabah aux couloirs du palais royal en passant bien sûr par la célèbre caverne aux
+            merveilles. Le Génie est aussi de la partie et permet de gagner des bonus.
+        </desc>
+        <rating>0.7</rating>
+        <releasedate>19940325T000000</releasedate>
+        <developer>Sims</developer>
+        <publisher>SEGA</publisher>
+        <genre>Plateforme</genre>
+        <players>1</players>
+        <hash>488CDA3C</hash>
+        <image>./media/images/Aladdin/Aladdin (Japan) [!].png</image>
+        <genreid>257</genreid>
+    </game>
+    <game id="12860" source="ScreenScraper.fr">
+        <path>./Aladdin/Other versions/Aladdin (Prototype - Dec 29, 1993).gg</path>
+        <name>Disney's Aladdin (Prototype - Dec 29, 1993) [EU](Beta)</name>
+        <desc>Reprenant les différentes séquences du film d'animation de Disney, Aladdin sur Game Gear permet de
+            retrouver tous les personnages de l'histoire. Ce jeu de plates-formes propose effectivement de suivre
+            Aladdin des rues d'Agrabah aux couloirs du palais royal en passant bien sûr par la célèbre caverne aux
+            merveilles. Le Génie est aussi de la partie et permet de gagner des bonus.
+        </desc>
+        <rating>0.7</rating>
+        <releasedate>19940619T000000</releasedate>
+        <developer>Sims</developer>
+        <publisher>SEGA</publisher>
+        <genre>Plateforme</genre>
+        <players>1</players>
+        <hash>5B1F717F</hash>
+        <image>./media/images/Aladdin/Other versions/Aladdin (Prototype - Jan 11, 1994).png</image>
+        <genreid>257</genreid>
+    </game>
+    <game id="12860" source="ScreenScraper.fr">
+        <path>./Aladdin/Other versions/Aladdin (Prototype - Jan 11, 1994).gg</path>
+        <name>Disney's Aladdin (Prototype - Jan 11, 1994) [EU](Beta)</name>
+        <desc>Reprenant les différentes séquences du film d'animation de Disney, Aladdin sur Game Gear permet de
+            retrouver tous les personnages de l'histoire. Ce jeu de plates-formes propose effectivement de suivre
+            Aladdin des rues d'Agrabah aux couloirs du palais royal en passant bien sûr par la célèbre caverne aux
+            merveilles. Le Génie est aussi de la partie et permet de gagner des bonus.
+        </desc>
+        <rating>0.7</rating>
+        <releasedate>19940619T000000</releasedate>
+        <developer>Sims</developer>
+        <publisher>SEGA</publisher>
+        <genre>Plateforme</genre>
+        <players>1</players>
+        <hash>8A1693AB</hash>
+        <image>./media/images/Aladdin/Other versions/Aladdin (Prototype - Jan 11, 1994).png</image>
+        <genreid>257</genreid>
+    </game>
+    <game id="12860" source="ScreenScraper.fr">
+        <path>./Aladdin/Other versions/Aladdin (Prototype - Jan 13, 1994).gg</path>
+        <name>Disney's Aladdin (Prototype - Jan 13, 1994) [EU](Beta)</name>
+        <desc>Reprenant les différentes séquences du film d'animation de Disney, Aladdin sur Game Gear permet de
+            retrouver tous les personnages de l'histoire. Ce jeu de plates-formes propose effectivement de suivre
+            Aladdin des rues d'Agrabah aux couloirs du palais royal en passant bien sûr par la célèbre caverne aux
+            merveilles. Le Génie est aussi de la partie et permet de gagner des bonus.
+        </desc>
+        <rating>0.7</rating>
+        <releasedate>19940619T000000</releasedate>
+        <developer>Sims</developer>
+        <publisher>SEGA</publisher>
+        <genre>Plateforme</genre>
+        <players>1</players>
+        <hash>75A7F142</hash>
+        <image>./media/images/Aladdin/Other versions/Aladdin (Prototype - Jan 11, 1994).png</image>
+        <genreid>257</genreid>
+    </game>
+    <game id="12860" source="ScreenScraper.fr">
+        <path>./Aladdin/Other versions/Aladdin (USA) [Brazilian Older Translation - ERTrans].gg</path>
+        <name>Disney's Aladdin (USA) [Brazilian Older Translation - ERTrans] [US]</name>
+        <desc>Reprenant les différentes séquences du film d'animation de Disney, Aladdin sur Game Gear permet de
+            retrouver tous les personnages de l'histoire. Ce jeu de plates-formes propose effectivement de suivre
+            Aladdin des rues d'Agrabah aux couloirs du palais royal en passant bien sûr par la célèbre caverne aux
+            merveilles. Le Génie est aussi de la partie et permet de gagner des bonus.
+        </desc>
+        <rating>0.7</rating>
+        <releasedate>19940623T000000</releasedate>
+        <developer>Sims</developer>
+        <publisher>SEGA</publisher>
+        <genre>Plateforme</genre>
+        <players>1</players>
+        <hash>691BF489</hash>
+        <image>./media/images/Aladdin/Other versions/Aladdin (USA) [Brazilian Older Translation - ERTrans].png</image>
+        <genreid>257</genreid>
+    </game>
+    <game id="12860" source="ScreenScraper.fr">
+        <path>./Aladdin/Other versions/Aladdin (USA) [Brazilian Translation - ERTrans].gg</path>
+        <name>Disney's Aladdin (USA) [Brazilian Translation - ERTrans] [US]</name>
+        <desc>Reprenant les différentes séquences du film d'animation de Disney, Aladdin sur Game Gear permet de
+            retrouver tous les personnages de l'histoire. Ce jeu de plates-formes propose effectivement de suivre
+            Aladdin des rues d'Agrabah aux couloirs du palais royal en passant bien sûr par la célèbre caverne aux
+            merveilles. Le Génie est aussi de la partie et permet de gagner des bonus.
+        </desc>
+        <rating>0.7</rating>
+        <releasedate>19940623T000000</releasedate>
+        <developer>Sims</developer>
+        <publisher>SEGA</publisher>
+        <genre>Plateforme</genre>
+        <players>1</players>
+        <hash>840F457E</hash>
+        <image>./media/images/Aladdin/Other versions/Aladdin (USA) [Brazilian Older Translation - ERTrans].png</image>
+        <genreid>257</genreid>
+    </game>
+    <game id="12860" source="ScreenScraper.fr">
+        <path>./Aladdin/Aladdin (World) [!].gg</path>
+        <name>Disney's Aladdin (World) [!] [EU,US]</name>
+        <desc>Reprenant les différentes séquences du film d'animation de Disney, Aladdin sur Game Gear permet de
+            retrouver tous les personnages de l'histoire. Ce jeu de plates-formes propose effectivement de suivre
+            Aladdin des rues d'Agrabah aux couloirs du palais royal en passant bien sûr par la célèbre caverne aux
+            merveilles. Le Génie est aussi de la partie et permet de gagner des bonus.
+        </desc>
+        <rating>0.7</rating>
+        <releasedate>19940619T000000</releasedate>
+        <developer>Sims</developer>
+        <publisher>SEGA</publisher>
+        <genre>Plateforme</genre>
+        <players>1</players>
+        <hash>7A41C1DC</hash>
+        <image>./media/images/Aladdin/Aladdin (World) [!].png</image>
+        <genreid>257</genreid>
+    </game>
+    <folder id="0" source="ScreenScraper.fr">
+        <path>./Aerial Assault</path>
+        <name>Aerial Assault (3)</name>
+        <desc>Folder: gamegear/Aerial Assault
+            Files: 3
+        </desc>
+        <image>./media/folders/Aerial Assault.png</image>
+    </folder>
+    <folder id="0" source="ScreenScraper.fr">
+        <path>./Aerial Assault/Other versions</path>
+        <name>Other versions (1)</name>
+        <desc>Folder: gamegear/Aerial Assault/Other versions
+            Files: 1
+        </desc>
+        <image>./media/folders/Aerial Assault/Other versions.png</image>
+    </folder>
+    <folder id="0" source="ScreenScraper.fr">
+        <path>./Aladdin</path>
+        <name>Aladdin (8)</name>
+        <desc>Folder: gamegear/Aladdin
+            Files: 8
+        </desc>
+        <image>./media/folders/Aladdin.png</image>
+    </folder>
+    <folder id="0" source="ScreenScraper.fr">
+        <path>./Aladdin/Other versions</path>
+        <name>Other versions (6)</name>
+        <desc>Folder: gamegear/Aladdin/Other versions
+            Files: 6
+        </desc>
+        <image>./media/folders/Aladdin/Other versions.png</image>
+    </folder>
+</gameList>

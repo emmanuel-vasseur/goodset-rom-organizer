@@ -3,11 +3,9 @@ package com.recalbox.goodset.organizer.main;
 import com.recalbox.goodset.organizer.RomOrganizer;
 import lombok.experimental.UtilityClass;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.UncheckedIOException;
 import java.util.logging.LogManager;
+
+import static com.recalbox.goodset.organizer.util.UncheckedIOExceptionThrower.rethrowIOException;
 
 @UtilityClass
 public class CommandLineRunnerInitialization {
@@ -17,15 +15,11 @@ public class CommandLineRunnerInitialization {
     public static RomOrganizer createRomOrganizer(String... commandLineArguments) {
         configureJavaUtilLogging();
         String romDirectory = commandLineArguments.length > 0 ? commandLineArguments[0] : DEFAULT_ROM_DIRECTORY;
-        return new RomOrganizer(new File(romDirectory));
+        return new RomOrganizer(romDirectory);
     }
 
     private static void configureJavaUtilLogging() {
-        try (InputStream is = CommandLineRunnerInitialization.class.getClassLoader().
-                getResourceAsStream("logging.properties")) {
-            LogManager.getLogManager().readConfiguration(is);
-        } catch (IOException e) {
-            throw new UncheckedIOException(e);
-        }
+        rethrowIOException(() -> LogManager.getLogManager().readConfiguration(
+                CommandLineRunnerInitialization.class.getClassLoader().getResourceAsStream("logging.properties")));
     }
 }

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<gameList>
+    <provider>
+        <System>Game Gear</System>
+        <software>Skraper</software>
+        <database>ScreenScraper.fr</database>
+        <web>http://www.screenscraper.fr</web>
+    </provider>
+    <game id="46279" source="ScreenScraper.fr">
+        <path>./5 in 1 Funpak/5 in 1 Funpak (USA) [!].gg</path>
+        <name>5 in 1 Funpak (USA) [!] [US]</name>
+        <desc>Pack de 5 jeux : Backgammon, Dames, Reversi, Échec, yahtzee</desc>
+        <rating>0.55</rating>
+        <releasedate>19940101T000000</releasedate>
+        <developer>Beam Software</developer>
+        <publisher>Interplay</publisher>
+        <genre>Compilation-Jeu de societe / plateau</genre>
+        <players>1-2</players>
+        <hash>F85A8CE8</hash>
+        <image>./media/images/5 in 1 Funpak/5 in 1 Funpak (USA) [!].png</image>
+        <genreid>3840</genreid>
+    </game>
+    <game id="12951" source="ScreenScraper.fr">
+        <path>./Addams Family, The/Addams Family, The (World) [!].gg</path>
+        <name>The Addams Family (World) [!] [WOR]</name>
+        <desc>The Addams Family est un jeu de plates-formes sur Game Gear. L'histoire se situe vers la fin du film La
+            Famille Addams alors que la famille est expulsée de son manoir par un avocat zélé. Comme si cela ne
+            suffisait pas, on apprend que Morticia, Pugsley, Mercredi et les autres ont disparu ! Vous incarnez donc
+            Gomez, seul rescapé, qui partira à la recherche de sa famille et affrontera tous ses ennemis jusqu'au
+            dernier : l'avocat !
+        </desc>
+        <rating>0.6</rating>
+        <releasedate>19940101T000000</releasedate>
+        <developer>Arc Developments</developer>
+        <publisher>Flying Edge</publisher>
+        <genre>Plateforme</genre>
+        <players>1</players>
+        <hash>1D01F999</hash>
+        <image>./media/images/Addams Family, The/Addams Family, The (World) [!].png</image>
+        <genreid>257</genreid>
+    </game>
+    <folder id="0" source="ScreenScraper.fr">
+        <path>./5 in 1 Funpak</path>
+        <name>5 in 1 Funpak (1)</name>
+        <desc>Folder: gamegear/5 in 1 Funpak
+            Files: 1
+        </desc>
+        <image>./media/folders/5 in 1 Funpak.png</image>
+    </folder>
+    <folder id="0" source="ScreenScraper.fr">
+        <path>./Addams Family, The</path>
+        <name>Addams Family, The (1)</name>
+        <desc>Folder: gamegear/Addams Family, The
+            Files: 1
+        </desc>
+        <image>./media/folders/Addams Family, The.png</image>
+    </folder>
+</gameList>

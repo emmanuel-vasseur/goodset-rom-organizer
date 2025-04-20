@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<gameList>
+    <provider>
+        <System>Game Gear</System>
+        <software>Skraper</software>
+        <database>ScreenScraper.fr</database>
+        <web>http://www.screenscraper.fr</web>
+    </provider>
+    <game id="46279" source="ScreenScraper.fr">
+        <path>./5 in 1 Funpak/5 in 1 Funpak (USA) [!].gg</path>
+        <name>5 in 1 Funpak (USA) [!] [US]</name>
+        <desc>Pack de 5 jeux : Backgammon, Dames, Reversi, Échec, yahtzee</desc>
+        <rating>0.55</rating>
+        <releasedate>19940101T000000</releasedate>
+        <developer>Beam Software</developer>
+        <publisher>Interplay</publisher>
+        <genre>Compilation-Jeu de societe / plateau</genre>
+        <players>1-2</players>
+        <hash>F85A8CE8</hash>
+        <image>./media/images/5 in 1 Funpak/5 in 1 Funpak (USA) [!].png</image>
+        <genreid>3840</genreid>
+    </game>
+    <game id="0" source="ScreenScraper.fr">
+        <path>./Alex Kidd in Miracle World/Alex Kidd in Miracle World (Taiwan) [MasterSystem Mode].sms</path>
+        <name>Alex Kidd in Miracle World (Taiwan) [MasterSystem Mode]</name>
+        <desc/>
+        <releasedate/>
+        <developer/>
+        <publisher/>
+        <genre/>
+        <players/>
+    </game>
+    <game id="12885" source="ScreenScraper.fr">
+        <path>./Alien 3/Alien 3 (Europe, USA) [!].gg</path>
+        <name>Alien 3 (Europe, USA) [!] [EU]</name>
+        <desc>Alien 3 sur Game Gear vous plonge directement après la fin du film "Aliens". Ellen Ripley, personnage
+            principal de la saga, est en sommeil cryogénique à bord du Sulaco. Un alien s'est infiltré à bord, décimant
+            l'équipage et provoquant le crash du vaisseau sur la planète Fiorina 161. Aidez Ripley à survivre et sauvez
+            les prisonniers des griffes des aliens en attendant que les secours arrivent.
+        </desc>
+        <rating>0.7</rating>
+        <releasedate>19930105T000000</releasedate>
+        <developer>Probe Software</developer>
+        <publisher>Arena Entertainment</publisher>
+        <genre>Plateforme</genre>
+        <players>1</players>
+        <hash>11A68C08</hash>
+        <image>./media/images/Alien 3/Alien 3 (Europe, USA) [!].png</image>
+        <genreid>257</genreid>
+    </game>
+    <game id="12885" source="ScreenScraper.fr">
+        <path>./Alien 3/Alien 3 (Japan) [!].gg</path>
+        <name>Alien 3 (Japan) [!] [JP]</name>
+        <desc>Alien 3 sur Game Gear vous plonge directement après la fin du film "Aliens". Ellen Ripley, personnage
+            principal de la saga, est en sommeil cryogénique à bord du Sulaco. Un alien s'est infiltré à bord, décimant
+            l'équipage et provoquant le crash du vaisseau sur la planète Fiorina 161. Aidez Ripley à survivre et sauvez
+            les prisonniers des griffes des aliens en attendant que les secours arrivent.
+        </desc>
+        <rating>0.7</rating>
+        <releasedate>19940527T000000</releasedate>
+        <developer>Probe Software</developer>
+        <publisher>Arena Entertainment</publisher>
+        <genre>Plateforme</genre>
+        <players>1</players>
+        <hash>06F6EEBB</hash>
+        <image>./media/images/Alien 3/Alien 3 (Japan) [!].png</image>
+        <genreid>257</genreid>
+    </game>
+    <game id="65246" source="ScreenScraper.fr">
+        <path>./Arcade Classics/Arcade Classics (USA) [!].gg</path>
+        <name>Arcade Classics (USA) [!] [US]</name>
+        <desc>Pack de 3 grands classiques du jeux vidéo : MISSILE COMMAND, CENTIPEDE et PONG</desc>
+        <rating>0.7</rating>
+        <releasedate>19960101T000000</releasedate>
+        <developer>Al Baker &amp; Associates</developer>
+        <publisher>SEGA</publisher>
+        <genre>Compilation</genre>
+        <players>1-2</players>
+        <hash>3DECA813</hash>
+        <image>./media/images/Arcade Classics/Arcade Classics (USA) [!].png</image>
+        <genreid>3840</genreid>
+    </game>
+    <folder id="0" source="ScreenScraper.fr">
+        <path>./5 in 1 Funpak</path>
+        <name>5 in 1 Funpak (1)</name>
+        <desc>Folder: gamegear/5 in 1 Funpak
+            Files: 1
+        </desc>
+        <image>./media/folders/5 in 1 Funpak.png</image>
+    </folder>
+    <folder id="0" source="ScreenScraper.fr">
+        <path>./Alex Kidd in Miracle World</path>
+        <name>Alex Kidd in Miracle World (1)</name>
+        <desc>Folder: gamegear/Alex Kidd in Miracle World
+            Files: 1
+        </desc>
+        <image>./media/folders/Alex Kidd in Miracle World.png</image>
+    </folder>
+    <folder id="0" source="ScreenScraper.fr">
+        <path>./Alien 3</path>
+        <name>Alien 3 (2)</name>
+        <desc>Folder: gamegear/Alien 3
+            Files: 2
+        </desc>
+        <image>./media/folders/Alien 3.png</image>
+    </folder>
+    <folder id="0" source="ScreenScraper.fr">
+        <path>./Arcade Classics</path>
+        <name>Arcade Classics (1)</name>
+        <desc>Folder: gamegear/Arcade Classics
+            Files: 1
+        </desc>
+        <image>./media/folders/Arcade Classics.png</image>
+    </folder>
+</gameList>

@@ -1,83 +1,104 @@
 package com.recalbox.goodset.organizer;
 
+import com.recalbox.goodset.organizer.config.ConfigProperties;
 import com.recalbox.goodset.organizer.util.FileUtils;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.UncheckedIOException;
-import java.util.AbstractMap.SimpleEntry;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Log
-@RequiredArgsConstructor
 public class RomOrganizer {
 
-    private static final String SUB_DIRECTORY_FOR_LOWER_QUALITY_ROMS = "Other versions";
-    public static final String GAMELIST_FILENAME = "gamelist.xml";
-
     private final RomNameHandling romNameHandling = new RomNameHandling();
-    private final File romDirectory;
+    private final ConfigProperties config = new ConfigProperties();
+
+    private final Path romDirectory;
+    private final Path gameListFile;
+
+    public RomOrganizer(String romDirectory) {
+        this.romDirectory = Paths.get(romDirectory).toAbsolutePath().normalize();
+        this.gameListFile = this.romDirectory.resolve(config.getGameListFilename());
+
+        checkArgument(Files.isDirectory(this.romDirectory), "Directory '%s' does not exits", this.romDirectory);
+    }
 
     public void listUnknownRomTypes() {
-        List<File> romFiles = FileUtils.listFiles(romDirectory);
-        List<SimpleEntry<String, List<String>>> romNamesWithUnknownTypes = romFiles.stream()
-                .map(rom -> new SimpleEntry<>(rom.getName(), romNameHandling.hasUnknownRomTypes(rom.getName())))
-                .filter(romAttributes -> !romAttributes.getValue().isEmpty())
-                .collect(Collectors.toList());
+        List<Path> romFiles = FileUtils.listFiles(romDirectory);
+        Map<String, List<String>> romNamesWithUnknownTypes = romFiles.stream()
+                .collect(Collectors.toMap(
+                        rom -> rom.getFileName().toString(),
+                        rom -> romNameHandling.getUnknownRomTypes(rom.getFileName().toString())));
+        romNamesWithUnknownTypes.values()
+                .removeIf(List::isEmpty);
 
         if (romNamesWithUnknownTypes.isEmpty()) {
-            log.info(() -> "** Result OK, No unknown rom types found in '" + romDirectory + "' files **");
+            log.info(String.format("** Result OK, No unknown rom types found in '%s' files **", romDirectory));
         } else {
-            log.warning(() -> "******** Unknown rom types found in '" + romDirectory + "' files ********");
-            romNamesWithUnknownTypes.forEach(romAttributes -> log.warning(
-                    romAttributes.getKey() + " : " + String.join(", ", romAttributes.getValue())
+            log.warning(String.format("******** Unknown rom types found in '%s' files ********", romDirectory));
+            romNamesWithUnknownTypes.forEach((romName, unknownRomTypes) ->
+                    log.warning(String.format("%s : %s", romName, String.join(", ", unknownRomTypes))
             ));
         }
     }
 
     public void renameRomTypes() {
-        List<File> romFiles = FileUtils.listFiles(romDirectory);
+        List<Path> romFiles = FileUtils.listFiles(romDirectory);
         romFiles.forEach(this::renameRom);
     }
 
-    private void renameRom(File rom) {
-        String newName = romNameHandling.replaceRomTypes(rom.getName());
-        if (!rom.getName().equals(newName)) {
+    private void renameRom(Path rom) {
+        String newName = romNameHandling.replaceRomTypes(rom.getFileName().toString());
+        if (!rom.getFileName().toString().equals(newName)) {
             FileUtils.renameFileName(rom, newName);
         }
     }
 
     public void groupRomsByGame() {
-        List<File> romFiles = FileUtils.listFiles(romDirectory);
+        List<Path> romFiles = FileUtils.listFiles(romDirectory);
         romFiles.forEach(this::moveRomToGameDirectory);
 
-        List<File> gameDirectories = FileUtils.listDirectories(romDirectory);
+        List<Path> gameDirectories = FileUtils.listDirectories(romDirectory);
         gameDirectories.forEach(this::splitGoodAndNotGoodRoms);
     }
 
-    private void splitGoodAndNotGoodRoms(File gameDirectory) {
-        List<String> gameRomNames = FileUtils.listFiles(gameDirectory).stream()
-                .map(File::getName)
-                .collect(Collectors.toList());
-        romNameHandling.getLowerQualityRomNames(gameRomNames).forEach(romName ->
-                FileUtils.moveToSubDirectory(new File(gameDirectory, romName), SUB_DIRECTORY_FOR_LOWER_QUALITY_ROMS));
-    }
-
-    private void moveRomToGameDirectory(File rom) {
-        String game = romNameHandling.getGame(rom.getName());
+    private void moveRomToGameDirectory(Path rom) {
+        String game = romNameHandling.getGame(rom.getFileName().toString());
         FileUtils.moveToSubDirectory(rom, game);
     }
 
-    List<String> loadGameList() {
-        try (FileInputStream gameListInputStream = new FileInputStream(new File(romDirectory, GAMELIST_FILENAME))) {
-            return FileUtils.readLines(gameListInputStream).collect(Collectors.toList());
-        } catch (IOException e) {
-            throw new UncheckedIOException(e);
-        }
+    private void splitGoodAndNotGoodRoms(Path gameDirectory) {
+        List<String> gameRomNames = FileUtils.listFiles(gameDirectory).stream()
+                .map(file -> file.getFileName().toString())
+                .collect(Collectors.toList());
+        romNameHandling.getLowerQualityRomNames(gameRomNames).forEach(romName ->
+                FileUtils.moveToSubDirectory(gameDirectory.resolve(romName), config.getLowerQualityRomsDirectory()));
     }
 
+    public void changeFolderImageInGameList() {
+        checkArgument(Files.isRegularFile(this.gameListFile), "File '%s' does not exits", this.gameListFile);
+        List<String> gameListContent = FileUtils.readAllLines(gameListFile);
+        GameListTransformer gameListTransformer = new GameListTransformer(gameListContent, config);
+
+        List<String> folderImagesToDelete = gameListTransformer.getFolderImagesThatWillBeReplaced();
+        gameListTransformer.changeFolderImagesByRomImages();
+
+        FileUtils.writeLinesIntoFile(gameListTransformer.getGameListContent(), gameListFile);
+        folderImagesToDelete.forEach(this::deleteFileAndAllEmptyParentDirectories);
+    }
+
+    private void deleteFileAndAllEmptyParentDirectories(String folderImage) {
+        Path folderImageFile = romDirectory.resolve(folderImage);
+        FileUtils.deleteFileAndAllEmptyParentDirectories(folderImageFile);
+    }
+
+    private static void checkArgument(boolean condition, String exceptionMessage, Object... messageArgs) {
+        if (!condition) {
+            throw new IllegalArgumentException(String.format(exceptionMessage, messageArgs));
+        }
+    }
 }

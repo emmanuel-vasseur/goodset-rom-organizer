@@ -108,7 +108,7 @@ class RomNameHandlingTest {
                 "Jang Pung II [S].gg",
         })
         void shouldNotHaveUnknownRomTypes_WhenRomName_Contains_KnownRomTypeMapping(String romName) {
-            List<String> unknownRomTypes = romNameHandling.hasUnknownRomTypes(romName);
+            List<String> unknownRomTypes = romNameHandling.getUnknownRomTypes(romName);
             assertThat(unknownRomTypes).isEmpty();
         }
 
@@ -122,7 +122,7 @@ class RomNameHandlingTest {
                 "Shinobi II - The Silent Fury [T+Rusbeta3_Lupus].gg",
         })
         void shouldNotHaveUnknownRomTypes_WhenRomName_Contains_KnownRomTranslationTypeMapping(String romName) {
-            List<String> unknownRomTypes = romNameHandling.hasUnknownRomTypes(romName);
+            List<String> unknownRomTypes = romNameHandling.getUnknownRomTypes(romName);
             assertThat(unknownRomTypes).isEmpty();
         }
 
@@ -135,7 +135,7 @@ class RomNameHandlingTest {
                 "Sonic Drift (Sample).gg",
         })
         void shouldNotHaveUnknownRomTypes_WhenRomName_Contains_KnownNotReplacedRomTypes(String romName) {
-            List<String> unknownRomTypes = romNameHandling.hasUnknownRomTypes(romName);
+            List<String> unknownRomTypes = romNameHandling.getUnknownRomTypes(romName);
             assertThat(unknownRomTypes).isEmpty();
         }
 
@@ -148,7 +148,7 @@ class RomNameHandlingTest {
                 "Xaropinho (Mappy Hack).gg",
         })
         void shouldNotHaveUnknownRomTypes_WhenRomName_Contains_KnownNotRegexReplacedRomTypes(String romName) {
-            List<String> unknownRomTypes = romNameHandling.hasUnknownRomTypes(romName);
+            List<String> unknownRomTypes = romNameHandling.getUnknownRomTypes(romName);
             assertThat(unknownRomTypes).isEmpty();
         }
 
@@ -162,7 +162,7 @@ class RomNameHandlingTest {
                 "Zool (with Invinciblity).gg|with Invinciblity",
         })
         void shouldHaveUnknownRomTypes_WhenRomName_Contains_UnknownRomType(String romName, String expectedUnknownRomType) {
-            List<String> unknownRomTypes = romNameHandling.hasUnknownRomTypes(romName);
+            List<String> unknownRomTypes = romNameHandling.getUnknownRomTypes(romName);
             assertThat(unknownRomTypes).containsExactly(expectedUnknownRomType);
         }
 

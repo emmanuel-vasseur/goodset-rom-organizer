@@ -53,7 +53,8 @@ public class RomTypeLoader {
 
     private static Stream<String> getResourceLines(String resourcePath) {
         InputStream romTypeMappingsInputStream = RomTypeLoader.class.getResourceAsStream(resourcePath);
-        return FileUtils.readLines(romTypeMappingsInputStream);
+        return FileUtils.readLines(romTypeMappingsInputStream)
+                .filter(line -> !line.isEmpty());
     }
 
 }

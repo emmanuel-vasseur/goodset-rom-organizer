@@ -43,7 +43,7 @@ public class RomNameHandling {
         return newRomName;
     }
 
-    public List<String> hasUnknownRomTypes(String romName) {
+    public List<String> getUnknownRomTypes(String romName) {
         String cleanedRomName = removeKnownRomTypes(romName);
 
         Matcher romTypeMatcher = Pattern.compile("[(\\[]([^(\\[]+)[)\\]]").matcher(cleanedRomName);
