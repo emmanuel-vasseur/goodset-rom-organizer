@@ -56,9 +56,7 @@ public class GameListTransformer {
         return folderImageLine
                 .trim()
                 .replaceAll("(</?image>)", "")
-                .replace("&amp;", "&")
-                .replace("&apos;", "'")
-                ;
+                .replace("&amp;", "&");
     }
 
     public void changeFolderImagesByRomImages() {

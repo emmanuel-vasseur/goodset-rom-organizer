@@ -13,71 +13,102 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class RomNameHandlingTest {
 
-    private RomNameHandling romNameHandling = new RomNameHandling();
+    RomNameHandling romNameHandling = new RomNameHandling();
 
     @Nested
     class ReplaceRomTypesTests {
 
         @ParameterizedTest
         @CsvSource(delimiter = '|', value = {
-                "Crystal Warriors (UE).gg|Crystal Warriors (Europe, USA).gg",
-                "James Bond 007 - The Duel (E) [!].gg|James Bond 007 - The Duel (Europe) [!].gg",
-                "Jang Pung II (K).gg|Jang Pung II (Korea).gg",
+                "Crystal Warriors (eu) (us).gg|Crystal Warriors (Europe, USA).gg",
+                "James Bond 007 - The Duel (EU) [!].gg|James Bond 007 - The Duel (Europe) [!].gg",
+                "Jang Pung II (KR).gg|Jang Pung II (Korea).gg",
                 "XPMCK v15 - Scotland by mic_ (PD).gg|XPMCK v15 - Scotland by mic_ (Public Domain).gg",
-                "Woody Pop (UEB) (V1.1) [!].gg|Woody Pop (World) (V1.1) [!].gg",
-                "Ultimate Soccer (JEB) [!].gg|Ultimate Soccer (World) [!].gg",
-                "Tails' Adventures (JU) [!].gg|Tails' Adventures (USA, Japan) [!].gg",
-                "Surf Ninjas (UB) [!].gg|Surf Ninjas (USA, Brazil) [!].gg",
-                "Super Monaco GP (JK).gg|Super Monaco GP (Japan, Korea).gg",
-                "Crystal Warriors (UE).gg|Crystal Warriors (Europe, USA).gg",
-                "Sonic The Hedgehog (JE) (V1.1) [!].gg|Sonic The Hedgehog (Europe, Japan) (V1.1) [!].gg",
-                "Incredible Crash Dummies, The (JUE) [!].gg|Incredible Crash Dummies, The (World) [!].gg",
-                "Iron Man X-O Manowar in Heavy Metal (U).gg|Iron Man X-O Manowar in Heavy Metal (USA).gg",
+                "Woody Pop (eU) (uS) (bR) (V1.1) [!].gg|Woody Pop (Europe, USA, Brazil) (V1.1) [!].gg",
+                "Tails' Adventures (us) (jp) [!].gg|Tails' Adventures (USA, Japan) [!].gg",
+                "Surf Ninjas (us) (br) [!].gg|Surf Ninjas (USA, Brazil) [!].gg",
+                "Super Monaco GP (jp) (kr).gg|Super Monaco GP (Japan, Korea).gg",
+                "Crystal Warriors (eu) (us).gg|Crystal Warriors (Europe, USA).gg",
+                "Sonic The Hedgehog (eu) (jp) (V1.1) [!].gg|Sonic The Hedgehog (Europe, Japan) (V1.1) [!].gg",
+                "Iron Man X-O Manowar in Heavy Metal (US).gg|Iron Man X-O Manowar in Heavy Metal (USA).gg",
 
-                "Iron Man X-O Manowar in Heavy Metal (U) [b1].gg|Iron Man X-O Manowar in Heavy Metal (USA) [BadDump 1].gg",
-                "Iron Man X-O Manowar in Heavy Metal (U) [a1].gg|Iron Man X-O Manowar in Heavy Metal (USA) [Alternate 1].gg",
-                "Indiana Jones and the Last Crusade (UE) [t1].gg|Indiana Jones and the Last Crusade (Europe, USA) [Training 1].gg",
-                "Kinetic Connection (J) [o1].gg|Kinetic Connection (Japan) [OverDump 1].gg",
-                "Zool (J) [hI].gg|Zool (Japan) [Hack I].gg",
-                "Alex Kidd in Miracle World (T) [S].sms|Alex Kidd in Miracle World (Taiwan) [MasterSystem Mode].sms",
+                "Iron Man X-O Manowar in Heavy Metal (US) [b1].gg|Iron Man X-O Manowar in Heavy Metal (USA) [BadDump 1].gg",
+                "Iron Man X-O Manowar in Heavy Metal (US) [a1].gg|Iron Man X-O Manowar in Heavy Metal (USA) [Alternate 1].gg",
+                "Indiana Jones and the Last Crusade (eu) (us) [t1].gg|Indiana Jones and the Last Crusade (Europe, USA) [Training 1].gg",
+                "Kinetic Connection (JP) [o1].gg|Kinetic Connection (Japan) [OverDump 1].gg",
+                "Zool (JP) [hI].gg|Zool (Japan) [Hack I].gg",
+                "Alex Kidd in Miracle World (TW) [S].sms|Alex Kidd in Miracle World (Taiwan) [MasterSystem Mode].sms",
         })
-        void replaceEachRomType(String romName, String expectedRomName) {
-            String newRomName = romNameHandling.replaceRomTypes(romName);
+        void replaceEachGamelistRomType(String romName, String expectedRomName) {
+            String newRomName = romNameHandling.replaceGamelistRomTypes(romName);
             assertThat(newRomName).isEqualTo(expectedRomName);
         }
 
         @ParameterizedTest
         @CsvSource(delimiter = '|', value = {
-                "Ax Battler - A Legend of Golden Axe [T+Fre20060926_Rysley].gg|Ax Battler - A Legend of Golden Axe [French Translation - 20060926_Rysley].gg",
-                "Crystal Warriors [T-Fre].gg|Crystal Warriors [French Older Translation].gg",
-                "Crystal Warriors [T+Fre.99_Asmodeath].gg|Crystal Warriors [French Translation - .99_Asmodeath].gg",
-                "Shining Force Gaiden - Final Conflict [T-Eng].gg|Shining Force Gaiden - Final Conflict [English Older Translation].gg",
-                "Phantasy Star Gaiden [T+Bra_CBT].gg|Phantasy Star Gaiden [Brazilian Translation - CBT].gg",
-                "Megaman [T+Ger1.00_Star-trans].gg|Megaman [German Translation - 1.00_Star-trans].gg",
-                "Ax Battler - A Legend of Golden Axe [T+Spa100_pkt].gg|Ax Battler - A Legend of Golden Axe [Spanish Translation - 100_pkt].gg",
-                "Shinobi II - The Silent Fury [T+Rusbeta3_Lupus].gg|Shinobi II - The Silent Fury [Russian Translation - beta3_Lupus].gg",
+                "Crystal Warriors (UE).gg|Crystal Warriors (eu)(us).gg",
+                "James Bond 007 - The Duel (E) [!].gg|James Bond 007 - The Duel (EU) [!].gg",
+                "Jang Pung II (K).gg|Jang Pung II (KR).gg",
+                "Woody Pop (UEB) (V1.1) [!].gg|Woody Pop (eU)(uS)(bR) (V1.1) [!].gg",
+                "Ultimate Soccer (JEB) [!].gg|Ultimate Soccer (World) [!].gg",
+                "Tails' Adventures (JU) [!].gg|Tails' Adventures (us)(jp) [!].gg",
+                "Surf Ninjas (UB) [!].gg|Surf Ninjas (us)(br) [!].gg",
+                "Super Monaco GP (JK).gg|Super Monaco GP (jp)(kr).gg",
+                "Crystal Warriors (UE).gg|Crystal Warriors (eu)(us).gg",
+                "Sonic The Hedgehog (JE) (V1.1) [!].gg|Sonic The Hedgehog (eu)(jp) (V1.1) [!].gg",
+                "Incredible Crash Dummies, The (JUE) [!].gg|Incredible Crash Dummies, The (World) [!].gg",
+                "Iron Man X-O Manowar in Heavy Metal (U).gg|Iron Man X-O Manowar in Heavy Metal (US).gg",
+                "Alex Kidd in Miracle World (T) [S].sms|Alex Kidd in Miracle World (TW) [S].sms",
+
+                "Ax Battler - A Legend of Golden Axe [T+Fre20060926_Rysley].gg|Ax Battler - A Legend of Golden Axe (Fr)[T+Fre20060926_Rysley].gg",
+                "Crystal Warriors [T-Fre].gg|Crystal Warriors (Fr)[T-Fre].gg",
+                "Crystal Warriors [T+Fre.99_Asmodeath].gg|Crystal Warriors (Fr)[T+Fre.99_Asmodeath].gg",
+                "Shining Force Gaiden - Final Conflict [T-Eng].gg|Shining Force Gaiden - Final Conflict (Uk)[T-Eng].gg",
+                "Phantasy Star Gaiden [T+Bra_CBT].gg|Phantasy Star Gaiden (Br)[T+Bra_CBT].gg",
+                "Megaman [T+Ger1.00_Star-trans].gg|Megaman (De)[T+Ger1.00_Star-trans].gg",
+                "Ax Battler - A Legend of Golden Axe [T+Spa100_pkt].gg|Ax Battler - A Legend of Golden Axe (Es)[T+Spa100_pkt].gg",
+                "Shinobi II - The Silent Fury [T+Rusbeta3_Lupus].gg|Shinobi II - The Silent Fury (Ru)[T+Rusbeta3_Lupus].gg",
+        })
+        void replaceEachFilenameRomType(String romName, String expectedRomName) {
+            String newRomName = romNameHandling.replaceFilenameRomTypes(romName);
+            assertThat(newRomName).isEqualTo(expectedRomName);
+        }
+
+        @ParameterizedTest
+        @CsvSource(delimiter = '|', value = {
+                "Ax Battler - A Legend of Golden Axe (Fr) [T+Fre20060926_Rysley].gg|Ax Battler - A Legend of Golden Axe [French Translation - 20060926_Rysley].gg",
+                "Crystal Warriors (Fr) [T-Fre].gg|Crystal Warriors [French Older Translation].gg",
+                "Crystal Warriors (Fr) [T+Fre.99_Asmodeath].gg|Crystal Warriors [French Translation - .99_Asmodeath].gg",
+                "Shining Force Gaiden - Final Conflict (Uk) [T-Eng].gg|Shining Force Gaiden - Final Conflict [English Older Translation].gg",
+                "Phantasy Star Gaiden (Br) [T+Bra_CBT].gg|Phantasy Star Gaiden [Brazilian Translation - CBT].gg",
+                "Megaman (De) [T+Ger1.00_Star-trans].gg|Megaman [German Translation - 1.00_Star-trans].gg",
+                "Ax Battler - A Legend of Golden Axe (Es) [T+Spa100_pkt].gg|Ax Battler - A Legend of Golden Axe [Spanish Translation - 100_pkt].gg",
+                "Shinobi II - The Silent Fury (Ru) [T+Rusbeta3_Lupus].gg|Shinobi II - The Silent Fury [Russian Translation - beta3_Lupus].gg",
         })
         void replaceAllRomTranslationType(String romName, String expectedRomName) {
-            String newRomName = romNameHandling.replaceRomTypes(romName);
+            String newRomName = romNameHandling.replaceGamelistRomTypes(romName);
             assertThat(newRomName).isEqualTo(expectedRomName);
         }
 
         @Test
         void replaceMultipleDifferentRomTypes() {
-            String newRomName = romNameHandling.replaceRomTypes("Ax Battler - A Legend of Golden Axe (UE) (V2.4) [T+Fre][a1].gg");
-            assertThat(newRomName).isEqualTo("Ax Battler - A Legend of Golden Axe (Europe, USA) (V2.4) [French Translation][Alternate 1].gg");
+            String newFilenameRomName = romNameHandling.replaceFilenameRomTypes("Ax Battler - A Legend of Golden Axe (UE) (V2.4) [T+Fre][a1].gg");
+            assertThat(newFilenameRomName).isEqualTo("Ax Battler - A Legend of Golden Axe (eu)(us) (V2.4) (Fr)[T+Fre][a1].gg");
+
+            String newGamelistRomName = romNameHandling.replaceGamelistRomTypes("Ax Battler - A Legend of Golden Axe (eu) (us) (V2.4) (Fr) [T+Fre][a1].gg");
+            assertThat(newGamelistRomName).isEqualTo("Ax Battler - A Legend of Golden Axe (Europe, USA) (V2.4) [French Translation][Alternate 1].gg");
         }
 
         @Test
         void shouldNotReplaceUnknownRomTypes() {
-            String newRomName = romNameHandling.replaceRomTypes("FIFA International Soccer (M4) [!].gg");
+            String newRomName = romNameHandling.replaceFilenameRomTypes("FIFA International Soccer (M4) [!].gg");
             assertThat(newRomName).isEqualTo("FIFA International Soccer (M4) [!].gg");
         }
 
         @Test
         void replaceMultipleTimesSameRomType() {
-            String newRomName = romNameHandling.replaceRomTypes("Jang Pung II [o1][o2][T-Fre][T+Fre].gg");
-            assertThat(newRomName).isEqualTo("Jang Pung II [OverDump 1][OverDump 2][French Older Translation][French Translation].gg");
+            String newRomName = romNameHandling.replaceGamelistRomTypes("Jang Pung II [o1] [o2] (Fr) [T-Fre] (Fr) [T+Fre].gg");
+            assertThat(newRomName).isEqualTo("Jang Pung II [OverDump 1] [OverDump 2] [French Older Translation] [French Translation].gg");
         }
 
     }
@@ -108,7 +139,7 @@ class RomNameHandlingTest {
                 "Jang Pung II [S].gg",
         })
         void shouldNotHaveUnknownRomTypes_WhenRomName_Contains_KnownRomTypeMapping(String romName) {
-            List<String> unknownRomTypes = romNameHandling.getUnknownRomTypes(romName);
+            List<String> unknownRomTypes = romNameHandling.getFilenameUnknownRomTypes(romName);
             assertThat(unknownRomTypes).isEmpty();
         }
 
@@ -122,7 +153,7 @@ class RomNameHandlingTest {
                 "Shinobi II - The Silent Fury [T+Rusbeta3_Lupus].gg",
         })
         void shouldNotHaveUnknownRomTypes_WhenRomName_Contains_KnownRomTranslationTypeMapping(String romName) {
-            List<String> unknownRomTypes = romNameHandling.getUnknownRomTypes(romName);
+            List<String> unknownRomTypes = romNameHandling.getFilenameUnknownRomTypes(romName);
             assertThat(unknownRomTypes).isEmpty();
         }
 
@@ -135,7 +166,7 @@ class RomNameHandlingTest {
                 "Sonic Drift (Sample).gg",
         })
         void shouldNotHaveUnknownRomTypes_WhenRomName_Contains_KnownNotReplacedRomTypes(String romName) {
-            List<String> unknownRomTypes = romNameHandling.getUnknownRomTypes(romName);
+            List<String> unknownRomTypes = romNameHandling.getFilenameUnknownRomTypes(romName);
             assertThat(unknownRomTypes).isEmpty();
         }
 
@@ -148,7 +179,7 @@ class RomNameHandlingTest {
                 "Xaropinho (Mappy Hack).gg",
         })
         void shouldNotHaveUnknownRomTypes_WhenRomName_Contains_KnownNotRegexReplacedRomTypes(String romName) {
-            List<String> unknownRomTypes = romNameHandling.getUnknownRomTypes(romName);
+            List<String> unknownRomTypes = romNameHandling.getFilenameUnknownRomTypes(romName);
             assertThat(unknownRomTypes).isEmpty();
         }
 
@@ -162,7 +193,7 @@ class RomNameHandlingTest {
                 "Zool (with Invinciblity).gg|with Invinciblity",
         })
         void shouldHaveUnknownRomTypes_WhenRomName_Contains_UnknownRomType(String romName, String expectedUnknownRomType) {
-            List<String> unknownRomTypes = romNameHandling.getUnknownRomTypes(romName);
+            List<String> unknownRomTypes = romNameHandling.getFilenameUnknownRomTypes(romName);
             assertThat(unknownRomTypes).containsExactly(expectedUnknownRomType);
         }
 

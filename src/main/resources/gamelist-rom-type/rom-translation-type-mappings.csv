@@ -1,4 +1,4 @@
-\[(T[-+])(Fre|Eng|Spa|Ger|Bra|Rus)(?:]|[_]?((?:\.\d|[a-zA-Z0-9])[^\]]*)])
+\((?:Fr|Uk|Es|De|Br|Ru)\) \[(T[-+])(Fre|Eng|Spa|Ger|Bra|Rus)(?:]|[_]?((?:\.\d|[a-zA-Z0-9])[^\]]*)])
 ;No possible match with only 1 group;[$2 $1];[$2 $1 - $3]
 
 T+;Translation

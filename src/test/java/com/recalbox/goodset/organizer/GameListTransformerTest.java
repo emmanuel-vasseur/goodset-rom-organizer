@@ -110,17 +110,14 @@ class GameListTransformerTest {
         @Test
         void shouldGetFolderImagesThatWillBeReplaced_ExcapeXmlCharacters() {
             GameListTransformer gameListTransformer = new GameListTransformer(Arrays.asList(
-                    "<image>./media/images/Aa&apos; Harimanada/Aa&apos; Harimanada (J) [!].gg</image>",
                     "<image>./media/images/Sonic &amp; Tails 2/Sonic &amp; Tails 2 (J) [!].gg</image>",
-                    "<image>./media/folders/Aa&apos; Harimanada.png</image>",
                     "<image>./media/folders/Sonic &amp; Tails 2.png</image>"
             ), new ConfigProperties());
 
             List<String> folderImagesThatWillBeReplaced = gameListTransformer.getFolderImagesThatWillBeReplaced();
 
             assertThat(folderImagesThatWillBeReplaced).containsExactlyInAnyOrder(
-                    "./media/folders/Sonic & Tails 2.png",
-                    "./media/folders/Aa' Harimanada.png"
+                    "./media/folders/Sonic & Tails 2.png"
             );
         }
     }

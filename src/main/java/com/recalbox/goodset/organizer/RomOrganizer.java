@@ -27,12 +27,12 @@ public class RomOrganizer {
         checkArgument(Files.isDirectory(this.romDirectory), "Directory '%s' does not exits", this.romDirectory);
     }
 
-    public void listUnknownRomTypes() {
+    public void listUnknownRomTypesInFilenames() {
         List<Path> romFiles = FileUtils.listFiles(romDirectory);
         Map<String, List<String>> romNamesWithUnknownTypes = romFiles.stream()
                 .collect(Collectors.toMap(
                         rom -> rom.getFileName().toString(),
-                        rom -> romNameHandling.getUnknownRomTypes(rom.getFileName().toString())));
+                        rom -> romNameHandling.getFilenameUnknownRomTypes(rom.getFileName().toString())));
         romNamesWithUnknownTypes.values()
                 .removeIf(List::isEmpty);
 
@@ -46,13 +46,13 @@ public class RomOrganizer {
         }
     }
 
-    public void renameRomTypes() {
+    public void renameFilenameRomTypes() {
         List<Path> romFiles = FileUtils.listFiles(romDirectory);
         romFiles.forEach(this::renameRom);
     }
 
     private void renameRom(Path rom) {
-        String newName = romNameHandling.replaceRomTypes(rom.getFileName().toString());
+        String newName = romNameHandling.replaceFilenameRomTypes(rom.getFileName().toString());
         if (!rom.getFileName().toString().equals(newName)) {
             FileUtils.renameFileName(rom, newName);
         }
