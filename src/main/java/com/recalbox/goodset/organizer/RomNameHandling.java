@@ -34,67 +34,66 @@ public class RomNameHandling {
         return emptyList();
     }
 
-    public String replaceFilenameRomTypes(String romName) {
-        String newRomName = romName;
-        for (RomTypeMapping mapping : RomTypeLoader.FILENAME_ROM_TYPE_MAPPINGS) {
-            newRomName = newRomName.replace(mapping.getTypeToken(), mapping.getTypeTranslation());
-        }
-        return newRomName;
-    }
-
     public List<String> getFilenameUnknownRomTypes(String romName) {
         String cleanedRomName = removeFilenameKnownRomTypes(romName);
-
-        Matcher romTypeMatcher = Pattern.compile("[(\\[]([^(\\[]+)[)\\]]").matcher(cleanedRomName);
-        List<String> unknownRomTypes = new ArrayList<>();
-        while (romTypeMatcher.find()) {
-            unknownRomTypes.add(romTypeMatcher.group(1));
-        }
-        return unknownRomTypes;
+        return getRemainingRomTypes(cleanedRomName);
     }
 
     private String removeFilenameKnownRomTypes(String romName) {
         String cleanedRomName = romName;
-
         for (RomTypeMapping mapping : RomTypeLoader.FILENAME_ROM_TYPE_MAPPINGS) {
-            cleanedRomName = cleanedRomName.replace(mapping.getTypeToken(), "");
+            cleanedRomName = cleanedRomName.replace(mapping.getRomTypeToken(), "");
         }
-        for (String romType : RomTypeLoader.FILENAME_NOT_REPLACED_ROM_TYPES) {
-            cleanedRomName = cleanedRomName.replace(romType, "");
-        }
-        for (String romTypeRegex : RomTypeLoader.FILENAME_NOT_REPLACED_ROM_TYPES_REGEX) {
-            cleanedRomName = cleanedRomName.replaceAll(romTypeRegex, "");
+        for (RomTypeMapping mapping : RomTypeLoader.FILENAME_ROM_TYPE_REGEX_MAPPINGS) {
+            cleanedRomName = cleanedRomName.replaceAll(mapping.getRomTypeToken(), "");
         }
         return cleanedRomName;
     }
 
-    public String replaceGamelistRomTypes(String romName) {
-        String newRomName = RomTypeLoader.GAMELIST_ROM_TRANSLATION_TYPE_MAPPINGS.replaceAllTranslationTypes(romName);
-
-        for (RomTypeMapping mapping : RomTypeLoader.GAMELIST_ROM_TYPE_MAPPINGS) {
-            newRomName = newRomName.replace(mapping.getTypeToken(), mapping.getTypeTranslation());
+    public String replaceFilenameRomTypes(String romName) {
+        String newRomName = romName;
+        for (RomTypeMapping mapping : RomTypeLoader.FILENAME_ROM_TYPE_MAPPINGS) {
+            newRomName = newRomName.replace(mapping.getRomTypeToken(), mapping.getRomTypeTranslation());
+        }
+        for (RomTypeMapping mapping : RomTypeLoader.FILENAME_ROM_TYPE_REGEX_MAPPINGS) {
+            newRomName = newRomName.replaceAll(mapping.getRomTypeToken(), mapping.getRomTypeTranslation());
         }
         return newRomName;
     }
 
     public List<String> getGamelistUnknownRomTypes(String romName) {
         String cleanedRomName = removeGamelistKnownRomTypes(romName);
+        return getRemainingRomTypes(cleanedRomName);
+    }
 
-        Matcher romTypeMatcher = Pattern.compile("[(\\[]([^(\\[]+)[)\\]]").matcher(cleanedRomName);
+    public String replaceGamelistRomTypes(String romName) {
+        String newRomName = romName;
+        for (RomTypeMapping mapping : RomTypeLoader.GAMELIST_ROM_TYPE_MAPPINGS) {
+            newRomName = newRomName.replace(mapping.getRomTypeToken(), mapping.getRomTypeTranslation());
+        }
+        for (RomTypeMapping mapping : RomTypeLoader.GAMELIST_ROM_TYPE_REGEX_MAPPINGS) {
+            newRomName = newRomName.replaceAll(mapping.getRomTypeToken(), mapping.getRomTypeTranslation());
+        }
+        return newRomName;
+    }
+
+    private String removeGamelistKnownRomTypes(String romName) {
+        String cleanedRomName = romName;
+        for (RomTypeMapping mapping : RomTypeLoader.GAMELIST_ROM_TYPE_MAPPINGS) {
+            cleanedRomName = cleanedRomName.replace(mapping.getRomTypeToken(), "");
+        }
+        for (RomTypeMapping mapping : RomTypeLoader.GAMELIST_ROM_TYPE_REGEX_MAPPINGS) {
+            cleanedRomName = cleanedRomName.replaceAll(mapping.getRomTypeToken(), "");
+        }
+        return cleanedRomName;
+    }
+
+    private List<String> getRemainingRomTypes(String cleanedRomName) {
+        Matcher romTypeMatcher = Pattern.compile("([(\\[][^)\\]]+[)\\]])").matcher(cleanedRomName);
         List<String> unknownRomTypes = new ArrayList<>();
         while (romTypeMatcher.find()) {
             unknownRomTypes.add(romTypeMatcher.group(1));
         }
         return unknownRomTypes;
-    }
-
-    private String removeGamelistKnownRomTypes(String romName) {
-        String translationTypeRegex = RomTypeLoader.GAMELIST_ROM_TRANSLATION_TYPE_MAPPINGS.getTranslationTypeRegex();
-        String cleanedRomName = romName.replaceAll(translationTypeRegex, "");
-
-        for (RomTypeMapping mapping : RomTypeLoader.GAMELIST_ROM_TYPE_MAPPINGS) {
-            cleanedRomName = cleanedRomName.replace(mapping.getTypeToken(), "");
-        }
-        return cleanedRomName;
     }
 }

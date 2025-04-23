@@ -112,7 +112,7 @@ class GameListTransformerTest {
             GameListTransformer gameListTransformer = new GameListTransformer(Arrays.asList(
                     "<image>./media/images/Sonic &amp; Tails 2/Sonic &amp; Tails 2 (J) [!].gg</image>",
                     "<image>./media/folders/Sonic &amp; Tails 2.png</image>"
-            ), new ConfigProperties());
+            ), new RomNameHandling(), new ConfigProperties());
 
             List<String> folderImagesThatWillBeReplaced = gameListTransformer.getFolderImagesThatWillBeReplaced();
 
@@ -125,6 +125,6 @@ class GameListTransformerTest {
     private GameListTransformer createGameListTransformer(String name) {
         InputStream gameListInputStream = RomTypeLoader.class.getResourceAsStream(name);
         List<String> gameListContent = FileUtils.readLines(gameListInputStream).collect(Collectors.toList());
-        return new GameListTransformer(gameListContent, new ConfigProperties());
+        return new GameListTransformer(gameListContent, new RomNameHandling(), new ConfigProperties());
     }
 }

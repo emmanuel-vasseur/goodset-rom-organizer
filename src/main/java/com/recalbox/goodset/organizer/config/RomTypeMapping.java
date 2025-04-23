@@ -6,6 +6,6 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Getter
 public class RomTypeMapping {
-    private final String typeToken;
-    private final String typeTranslation;
+    private final String romTypeToken;
+    private final String romTypeTranslation;
 }

@@ -1,6 +1,6 @@
-package com.recalbox.goodset.organizer.main;
+package com.recalbox.goodset.organizer.main.deprecated;
 
-import static com.recalbox.goodset.organizer.main.CommandLineRunnerInitialization.createRomOrganizer;
+import static com.recalbox.goodset.organizer.main.CommandLineRunnerInitializer.createRomOrganizer;
 
 public class ChangeFolderImageInGameList {
 

@@ -7,14 +7,19 @@ import lombok.extern.java.Log;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static java.util.Collections.singletonList;
 
 @RequiredArgsConstructor
 @Log
 public class GameListTransformer {
+    private static final String XML_NAME_START_TAG = "<name>";
+    private static final String XML_NAME_TAG_REGEX = "(</?name>)";
+    private static final String XML_IMAGE_TAG_REGEX = "(</?image>)";
     private static final String IMAGE_XML_LINE_SUFFIX = ".png</image>";
     private static final String LOWER_QUALITY_GAME_IMAGE_XML_LINE_SUFFIX_TEMPLATE = "/${lower-quality-rom.directory}" + IMAGE_XML_LINE_SUFFIX;
     private static final String FOLDER_IMAGE_XML_LINE_PREFIX_TEMPLATE = "<image>./media/${folder-images.directory}/";
@@ -23,6 +28,7 @@ public class GameListTransformer {
     private static final String IMAGE_TO_FOLDER_SUBSTITUTION_TEMPLATE = "$1/${folder-images.directory}/$2";
 
     private final List<String> gameListContent;
+    private final RomNameHandling romNameHandling;
 
     private final String folderImageXmlLinePrefix;
     private final String gameImageXmlLinePrefix;
@@ -30,8 +36,9 @@ public class GameListTransformer {
     private final String imageToFolderRegex;
     private final String imageToFolderSubstitution;
 
-    public GameListTransformer(List<String> gameListContent, ConfigProperties config) {
+    public GameListTransformer(List<String> gameListContent, RomNameHandling romNameHandling, ConfigProperties config) {
         this.gameListContent = new ArrayList<>(gameListContent);
+        this.romNameHandling = romNameHandling;
 
         folderImageXmlLinePrefix = config.replaceProperties(FOLDER_IMAGE_XML_LINE_PREFIX_TEMPLATE);
         gameImageXmlLinePrefix = config.replaceProperties(GAME_IMAGE_XML_LINE_PREFIX_TEMPLATE);
@@ -48,14 +55,14 @@ public class GameListTransformer {
         Map<String, List<String>> imageLinesPerFolder = groupImageLinesPerFolder();
         return imageLinesPerFolder.keySet().stream()
                 .filter(gameListContent::contains)
-                .map(GameListTransformer::extractFileFromXmlImageTag)
+                .map(this::extractFileFromXmlImageTag)
                 .collect(Collectors.toList());
     }
 
-    private static String extractFileFromXmlImageTag(String folderImageLine) {
+    private String extractFileFromXmlImageTag(String folderImageLine) {
         return folderImageLine
                 .trim()
-                .replaceAll("(</?image>)", "")
+                .replaceAll(XML_IMAGE_TAG_REGEX, "")
                 .replace("&amp;", "&");
     }
 
@@ -91,5 +98,40 @@ public class GameListTransformer {
             imageLinesPerFolder.put(folder + lowerQualityGameImageXmlLineSuffix, lines);
         });
         return imageLinesPerFolder;
+    }
+
+    public void renameRomTypes() {
+        gameListContent.replaceAll(this::replaceRomTypesInRomName);
+    }
+
+    private String replaceRomTypesInRomName(String line) {
+        if (isXmlNameNode(line)) {
+            return romNameHandling.replaceGamelistRomTypes(line);
+        }
+        return line;
+    }
+
+    private boolean isXmlNameNode(String line) {
+        return line.trim().startsWith(XML_NAME_START_TAG);
+    }
+
+    public Map<String, List<String>> getRomNameUnknownRomTypes() {
+        Map<String, List<String>> romNamesWithUnknownTypes = getAllRomNames().stream()
+                .collect(Collectors.toMap(
+                        Function.identity(),
+                        romNameHandling::getGamelistUnknownRomTypes,
+                        (a, b) -> Stream.concat(a.stream(), b.stream())
+                                .collect(Collectors.toList())));
+
+        romNamesWithUnknownTypes.values()
+                .removeIf(List::isEmpty);
+        return romNamesWithUnknownTypes;
+    }
+
+    private List<String> getAllRomNames() {
+        return gameListContent.stream()
+                .filter(this::isXmlNameNode)
+                .map(line -> line.replaceAll(XML_NAME_TAG_REGEX, ""))
+                .collect(Collectors.toList());
     }
 }

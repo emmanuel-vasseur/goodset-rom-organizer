@@ -36,17 +36,27 @@ public class RomOrganizer {
         romNamesWithUnknownTypes.values()
                 .removeIf(List::isEmpty);
 
+        logUnknownRomTypes(romNamesWithUnknownTypes, romDirectory);
+    }
+
+    public void listUnknownRomTypesInGamelist() {
+        GameListTransformer gameListTransformer = createGameListTransformer();
+        Map<String, List<String>> romNamesWithUnknownTypes = gameListTransformer.getRomNameUnknownRomTypes();
+        logUnknownRomTypes(romNamesWithUnknownTypes, gameListFile);
+    }
+
+    private void logUnknownRomTypes(Map<String, List<String>> romNamesWithUnknownTypes, Path location) {
         if (romNamesWithUnknownTypes.isEmpty()) {
-            log.info(String.format("** Result OK, No unknown rom types found in '%s' files **", romDirectory));
+            log.info(String.format("** Result OK, No unknown rom types found in '%s' **", location));
         } else {
-            log.warning(String.format("******** Unknown rom types found in '%s' files ********", romDirectory));
+            log.warning(String.format("******** Unknown rom types found in '%s' ********", location));
             romNamesWithUnknownTypes.forEach((romName, unknownRomTypes) ->
                     log.warning(String.format("%s : %s", romName, String.join(", ", unknownRomTypes))
             ));
         }
     }
 
-    public void renameFilenameRomTypes() {
+    public void renameRomTypesInFilenames() {
         List<Path> romFiles = FileUtils.listFiles(romDirectory);
         romFiles.forEach(this::renameRom);
     }
@@ -56,6 +66,12 @@ public class RomOrganizer {
         if (!rom.getFileName().toString().equals(newName)) {
             FileUtils.renameFileName(rom, newName);
         }
+    }
+
+    public void renameRomTypesInGamelist() {
+        GameListTransformer gameListTransformer = createGameListTransformer();
+        gameListTransformer.renameRomTypes();
+        FileUtils.writeLinesIntoFile(gameListTransformer.getGameListContent(), gameListFile);
     }
 
     public void groupRomsByGame() {
@@ -80,9 +96,7 @@ public class RomOrganizer {
     }
 
     public void changeFolderImageInGameList() {
-        checkArgument(Files.isRegularFile(this.gameListFile), "File '%s' does not exits", this.gameListFile);
-        List<String> gameListContent = FileUtils.readAllLines(gameListFile);
-        GameListTransformer gameListTransformer = new GameListTransformer(gameListContent, config);
+        GameListTransformer gameListTransformer = createGameListTransformer();
 
         List<String> folderImagesToDelete = gameListTransformer.getFolderImagesThatWillBeReplaced();
         gameListTransformer.changeFolderImagesByRomImages();
@@ -94,6 +108,12 @@ public class RomOrganizer {
     private void deleteFileAndAllEmptyParentDirectories(String folderImage) {
         Path folderImageFile = romDirectory.resolve(folderImage);
         FileUtils.deleteFileAndAllEmptyParentDirectories(folderImageFile);
+    }
+
+    private GameListTransformer createGameListTransformer() {
+        checkArgument(Files.isRegularFile(this.gameListFile), "File '%s' does not exits", this.gameListFile);
+        List<String> gameListContent = FileUtils.readAllLines(gameListFile);
+        return new GameListTransformer(gameListContent, romNameHandling, config);
     }
 
     private static void checkArgument(boolean condition, String exceptionMessage, Object... messageArgs) {

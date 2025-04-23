@@ -1,0 +1,47 @@
+[!];[!];[!];[Best Version]
+;      ;(Best);(Best Version)
+;      ;(Proto.);(Prototype)
+;      ;(Trans.);(Translated)
+;      ;(Unl.);(Unlicensed)
+;      ;(Alt.);(Alternate)
+
+[S];[S];[S];[MasterSystem Mode]
+(PD);(PD);(PD);(Public Domain)
+;        ;ZZZ(notgame):;[Not a game] ;
+
+[T+Fre;(FR)[T+Fre;(FR) [T+Fre;[French Translation;
+[T-Fre;(FR)[T-Fre;(FR) [T-Fre;[French Older Translation;
+[T+Eng;(UK)[T+Eng;(UK) [T+Eng;[English Translation;
+[T-Eng;(UK)[T-Eng;(UK) [T-Eng;[English Older Translation;
+[T+Spa;(ES)[T+Spa;(ES) [T+Spa;[Spanish Translation;
+[T-Spa;(ES)[T-Spa;(ES) [T-Spa;[Spanish Older Translation;
+[T+Ger;(DE)[T+Ger;(DE) [T+Ger;[German Translation;
+[T-Ger;(DE)[T-Ger;(DE) [T-Ger;[German Older Translation;
+[T+Bra;(BR)[T+Bra;(BR) [T+Bra;[Brazilian Translation;
+[T-Bra;(BR)[T-Bra;(BR) [T-Bra;[Brazilian Older Translation;
+[T+Rus;(RU)[T+Rus;(RU) [T+Rus;[Russian Translation;
+[T-Rus;(RU)[T-Rus;(RU) [T-Rus;[Russian Older Translation;
+
+(JUE);(World);(World);(World)
+(JUEB);(World);[EU,US,JP];[World]
+;            ;[WOR];[World]
+
+(JE);(EU)(JP);(EU) (JP);(Europe, Japan)
+(JEB);(EU)(JP);[EU,JP];[Europe, Japan]
+(UE);(EU)(US);(EU) (US);(Europe, USA)
+(UEB);(EU)(US);[EU,US];[Europe, USA]
+(JU);(US)(JP);(US) (JP);(USA, Japan)
+;            ;[US,JP];[USA, Japan]
+(JK);(JP)(KR);(JP) (KR);(Japan, Korea)
+;            ;[JP,KR];[Japan, Korea]
+
+(E);(EU);(EU);(Europe)
+(EB);(EU);[EU];[Europe]
+(U);(US);(US);(USA)
+(UB);(US);[US];[USA]
+(J);(JP);(JP);(Japan)
+;       ;[JP];[Japan]
+(K);(KR);(KR);(Korea)
+;       ;[KR];[Korea]
+(T);(TW);(TW);(Taiwan)
+;       ;[TW];[Taiwan]
