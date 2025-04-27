@@ -38,10 +38,24 @@ class RomNameHandlingTest {
                 "Crystal Warriors [T-Fre].gg|Crystal Warriors (FR)[T-Fre].gg",
                 "Crystal Warriors [T+Fre.99_Asmodeath].gg|Crystal Warriors (FR)[T+Fre.99_Asmodeath].gg",
                 "Shining Force Gaiden - Final Conflict [T-Eng].gg|Shining Force Gaiden - Final Conflict (UK)[T-Eng].gg",
-                "Phantasy Star Gaiden [T+Bra_CBT].gg|Phantasy Star Gaiden (BR)[T+Bra_CBT].gg",
+                "Phantasy Star Gaiden [T+Bra_CBT].gg|Phantasy Star Gaiden (PT)[T+Bra_CBT].gg",
                 "Megaman [T+Ger1.00_Star-trans].gg|Megaman (DE)[T+Ger1.00_Star-trans].gg",
                 "Ax Battler - A Legend of Golden Axe [T+Spa100_pkt].gg|Ax Battler - A Legend of Golden Axe (ES)[T+Spa100_pkt].gg",
                 "Shinobi II - The Silent Fury [T+Rusbeta3_Lupus].gg|Shinobi II - The Silent Fury (RU)[T+Rusbeta3_Lupus].gg",
+
+                "Dai-3-Ji Super Robot Taisen (J) (V1.1) [T+En1.00_Aeon Genesis].sfc|Dai-3-Ji Super Robot Taisen (JP) (V1.1) (UK)[T+Eng1.00_Aeon Genesis].sfc",
+                "BS Legend of Zelda, The - Ancient Stone Tablets - Master Quest - Chapter 1 (J) (BS) [T-En by Euclid v1.0] [n].sfc|BS Legend of Zelda, The - Ancient Stone Tablets - Master Quest - Chapter 1 (JP)(BS) (UK)[T-Eng by Euclid v1.0] [n].sfc",
+                "Marvel Super Heroes - War of the Gems (Eng).sfc|Marvel Super Heroes - War of the Gems (US).sfc",
+                "RoboCop 3 (U) (Eng).sfc|RoboCop 3 (US).sfc",
+                "Legend of Zelda, The - Parallel Remodel Worlds (Hack Sprites) (U).sfc|Legend of Zelda, The - Parallel Remodel Worlds (Hack Sprites) (US).sfc",
+                "Super Fire Pro Wrestling 2 (J) (Final Prototype).sfc|Super Fire Pro Wrestling 2 (JP) (Final Prototype).sfc",
+                "RPM Racing (Prototype-08-14-91).sfc|RPM Racing (Prototype 08-14-91).sfc",
+
+                "3ji no Wide Shou (BS).sfc|3ji no Wide Shou (JP)(BS).sfc",
+                "Arkanoid - Doh It Again (J) (BS).sfc|Arkanoid - Doh It Again (JP)(BS).sfc",
+                "ASCII Music Tool (1995.11.02 v1.0) (BS).sfc|ASCII Music Tool (1995.11.02 v1.0) (JP)(BS).sfc",
+                "SD Ultra Battle - Seven Densetsu + ST BIOS (ST) [h1].sfc|SD Ultra Battle - Seven Densetsu (JP)(ST) [h1].sfc",
+                "Poi Poi Ninja World (ST) [!].sfc|Poi Poi Ninja World (JP)(ST) [!].sfc",
         })
         void replaceEachFilenameRomType(String romName, String expectedRomName) {
             String newRomName = romNameHandling.replaceFilenameRomTypes(romName);
@@ -67,6 +81,8 @@ class RomNameHandlingTest {
                 "Indiana Jones and the Last Crusade [EU] (M5).gg|Indiana Jones and the Last Crusade [Europe] (5 Languages).gg",
                 "ZZZ(notgame):Kinetic Connection.gg|[Not a game] Kinetic Connection.gg",
                 "Zool [JP] [hI].gg|Zool [Japan] [Intro Hack].gg",
+                "Tick, The (EU) [p1+C].sfc|Tick, The (Europe) [Pirate (1+C)].sfc",
+                "Carrier Aces (US) [hIR].sfc|Carrier Aces (USA) [Intro Hack (R)].sfc",
                 "Alex Kidd in Miracle World [TW] [S].sms|Alex Kidd in Miracle World [Taiwan] [MasterSystem Mode].sms",
         })
         void replaceEachGamelistRomType(String romName, String expectedRomName) {
@@ -80,7 +96,7 @@ class RomNameHandlingTest {
                 "Crystal Warriors (FR) [T-Fre].gg|Crystal Warriors [French Older Translation].gg",
                 "Crystal Warriors (FR) [T+Fre.99_Asmodeath].gg|Crystal Warriors [French Translation (.99_Asmodeath)].gg",
                 "Shining Force Gaiden - Final Conflict (UK) [T-Eng].gg|Shining Force Gaiden - Final Conflict [English Older Translation].gg",
-                "Phantasy Star Gaiden (BR) [T+Bra_CBT].gg|Phantasy Star Gaiden [Brazilian Translation (CBT)].gg",
+                "Phantasy Star Gaiden (PT) [T+Bra_CBT].gg|Phantasy Star Gaiden [Portuguese Translation (CBT)].gg",
                 "Megaman (DE) [T+Ger1.00_Star-trans].gg|Megaman [German Translation (1.00_Star-trans)].gg",
                 "Ax Battler - A Legend of Golden Axe (ES) [T+Spa100_pkt].gg|Ax Battler - A Legend of Golden Axe [Spanish Translation (100_pkt)].gg",
                 "Shinobi II - The Silent Fury (RU) [T+Rusbeta3_Lupus].gg|Shinobi II - The Silent Fury [Russian Translation (beta3_Lupus)].gg",
@@ -121,12 +137,18 @@ class RomNameHandlingTest {
                 "Megaman [a3] (Alt.).gg|Megaman [Alternate (3)].gg",
                 "Ax Battler - A Legend of Golden Axe (EU) (JP) [EU,JP].gg|Ax Battler - A Legend of Golden Axe (Europe, Japan).gg",
                 "Ax Battler - A Legend of Golden Axe (EU) (JP) [EU,JP].gg|Ax Battler - A Legend of Golden Axe (Europe, Japan).gg",
-                "Mappy (Mappy Hack) (Hack)|Mappy (Mappy Hack)",
+                "Mappy (Mappy Hack) (Hack).gg|Mappy (Mappy Hack).gg",
+                "Flubber (Unl) [!] (Unl.).sfc|Flubber (Unlicensed) [Best Version].sfc",
+                "Chrono Trigger - Crimson Echoes (98% Complete Beta) (Hack) (Beta).sfc|Chrono Trigger - Crimson Echoes (98% Complete Beta) (Hack).sfc",
+                "Ultima - Runes of Virtue II (Beta1994) [b2] (Beta).sfc|Ultima - Runes of Virtue II (Beta 1994) [Bad Dump (2)].sfc",
+                "Mr. Tuff (Beta-Jul1994) (M3) (Beta).sfc|Mr. Tuff (Beta Jul1994) (3 Languages).sfc",
+                "Super Mario World - The Final Journey (Demo1) (SMW1 Hack) (Hack) (Demo).sfc|Super Mario World - The Final Journey (Demo 1) (SMW1 Hack).sfc",
+                "Bowser's Return (Demo 4) (Beta 1) by MasterRPGr (TheRPGLPer) (2010-03-05) (SMW1 Hack) (Beta) (Hack) (Demo).sfc|Bowser's Return (Demo 4) (Beta 1) by MasterRPGr (TheRPGLPer) (2010-03-05) (SMW1 Hack).sfc",
 
-                "Mickey Mouse no Castle Illusion (JP) [S] [h1] [JP](Hack)|Mickey Mouse no Castle Illusion (Japan) [MasterSystem Mode] [Hack (1)]",
-                "Tom and Jerry : The Movie (EU) (US) [t1] [hI] [EU,US](Hack)|Tom and Jerry : The Movie (Europe, USA) [Training (1)] [Intro Hack]",
-                "Shinobi II - The Silent Fury (EU) (US) [!] [a2] [S] [EU,US] (Alt.) (Best).gg|Shinobi II - The Silent Fury [Best Version] (Europe, USA) [Alternate (2)] [MasterSystem Mode].gg",
-                "Shinobi II - The Silent Fury (World) [!] [a2] [S] [EU,US] (Alt.) (Best).gg|Shinobi II - The Silent Fury [Best Version] (World) [Alternate (2)] [MasterSystem Mode] [Europe, USA].gg",
+                "Mickey Mouse no Castle Illusion (JP) [S] [h1C] [JP](Hack)|Mickey Mouse no Castle Illusion (Japan) [MasterSystem Mode] [Hack (1C)]",
+                "Tom and Jerry : The Movie (EU) (US) [t1] [hIR] [EU,US](Hack)|Tom and Jerry : The Movie (Europe, USA) [Training (1)] [Intro Hack (R)]",
+                "Shinobi II - The Silent Fury (EU) (US) [!] [a2C] [S] [EU,US] (Alt.) (Best).gg|Shinobi II - The Silent Fury [Best Version] (Europe, USA) [Alternate (2C)] [MasterSystem Mode].gg",
+                "Shinobi II - The Silent Fury (World) [!] [a2+C] [S] [EU,US] (Alt.) (Best).gg|Shinobi II - The Silent Fury [Best Version] (World) [Alternate (2+C)] [MasterSystem Mode] [Europe, USA].gg",
         })
         void replaceRemoveDuplicatedRomTypes(String romName, String expectedRomName) {
             String newRomName = romNameHandling.replaceGamelistRomTypes(romName);
@@ -205,7 +227,7 @@ class RomNameHandlingTest {
         @ValueSource(strings = {
                 "Crystal Warriors (FR) [T-Fre].gg",
                 "Crystal Warriors (FR) [T+Fre.99_Asmodeath].gg",
-                "Phantasy Star Gaiden (BR) [T+Bra_CBT].gg",
+                "Phantasy Star Gaiden (PT) [T+Bra_CBT].gg",
                 "Megaman (DE) [T+Ger1.00_Star-trans].gg",
                 "Ax Battler - A Legend of Golden Axe (ES) [T+Spa100_pkt].gg",
                 "Shinobi II - The Silent Fury (RU) [T+Rusbeta3_Lupus].gg",
@@ -250,9 +272,9 @@ class RomNameHandlingTest {
         @ParameterizedTest
         @CsvSource(delimiter = '|', value = {
                 "Woody Pop (V1_1).gg|(V1_1)",
-                "Sports Trivia (Prototype-Mar 09, 1995).gg|(Prototype-Mar 09, 1995)",
+                "Sports Trivia (Proto Mar 09, 1995).gg|(Proto Mar 09, 1995)",
                 "Olympic Gold - Barcelona '92 (M9).gg|(M9)",
-                "Asterix and the Secret Mission (M2).gg|(M2)",
+                "Asterix and the Secret Mission (M1).gg|(M1)",
                 "Xaropinho (Mappy-Hack).gg|(Mappy-Hack)",
                 "Zool (with Invinciblity).gg|(with Invinciblity)",
         })

@@ -4,12 +4,17 @@ import com.recalbox.goodset.organizer.config.ConfigProperties;
 import com.recalbox.goodset.organizer.util.FileUtils;
 import lombok.extern.java.Log;
 
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.io.IOException;
+import java.nio.file.*;
+import java.nio.file.attribute.BasicFileAttributes;
+import java.util.AbstractMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import static com.recalbox.goodset.organizer.util.UncheckedIOExceptionThrower.rethrowIOException;
 
 @Log
 public class RomOrganizer {
@@ -28,37 +33,50 @@ public class RomOrganizer {
     }
 
     public void listUnknownRomTypesInFilenames() {
-        List<Path> romFiles = FileUtils.listFiles(romDirectory);
-        Map<String, List<String>> romNamesWithUnknownTypes = romFiles.stream()
-                .collect(Collectors.toMap(
-                        rom -> rom.getFileName().toString(),
-                        rom -> romNameHandling.getFilenameUnknownRomTypes(rom.getFileName().toString())));
-        romNamesWithUnknownTypes.values()
-                .removeIf(List::isEmpty);
-
-        logUnknownRomTypes(romNamesWithUnknownTypes, romDirectory);
+        Stream<String> romNames = FileUtils.listFiles(romDirectory).stream().map(rom -> rom.getFileName().toString());
+        Map<String, List<String>> romNamesWithUnknownTypes = romNameHandling.getRomNamesWithUnknownRomTypes(romNames, romNameHandling::getFilenameUnknownRomTypes);
+        logRomNamesWithUnknownRomTypes(romNamesWithUnknownTypes, romDirectory);
     }
 
     public void listUnknownRomTypesInGamelist() {
         GameListTransformer gameListTransformer = createGameListTransformer();
-        Map<String, List<String>> romNamesWithUnknownTypes = gameListTransformer.getRomNameUnknownRomTypes();
-        logUnknownRomTypes(romNamesWithUnknownTypes, gameListFile);
+        Map<String, List<String>> romNamesWithUnknownTypes = gameListTransformer.getGamelistRomNamesWithUnknownRomTypes();
+        logRomNamesWithUnknownRomTypes(romNamesWithUnknownTypes, gameListFile);
     }
 
-    private void logUnknownRomTypes(Map<String, List<String>> romNamesWithUnknownTypes, Path location) {
-        if (romNamesWithUnknownTypes.isEmpty()) {
-            log.info(String.format("** Result OK, No unknown rom types found in '%s' **", location));
+    private void logRomNamesWithUnknownRomTypes(Map<String, List<String>> romNamesWithUnknownTypes, Path location) {
+        logMapOfList(romNamesWithUnknownTypes, location, "roms with unknown rom types", "unknown types");
+        Map<String, List<String>> unknownRomTypesWithRomNames = inverseMapOfList(romNamesWithUnknownTypes);
+        logMapOfList(unknownRomTypesWithRomNames, location, "unknown rom types", "roms");
+    }
+
+    private void logMapOfList(Map<String, List<String>> mapOfList,
+                              Path location, String title, String mapEntryTitle) {
+        if (mapOfList.isEmpty()) {
+            log.info(String.format("** Result OK, No %s found in '%s' **", title, location));
         } else {
-            log.warning(String.format("******** Unknown rom types found in '%s' ********", location));
-            romNamesWithUnknownTypes.forEach((romName, unknownRomTypes) ->
-                    log.warning(String.format("%s : %s", romName, String.join(", ", unknownRomTypes))
-            ));
+            log.warning(String.format("******** %s %s found in '%s' ********",
+                    mapOfList.size(), title, location));
+            mapOfList.forEach((entryKey, entryValues) ->
+                    log.warning(String.format("%s %s - %s : %s",
+                            entryValues.size(), mapEntryTitle, entryKey, String.join(", ", entryValues))));
         }
     }
 
+    private Map<String, List<String>> inverseMapOfList(Map<String, List<String>> mapOfList) {
+        return mapOfList.entrySet().stream()
+                .flatMap(entry -> entry.getValue().stream() // transform Entry<String, List<String>> to List<Entry<String, String>>
+                        .map(value -> new AbstractMap.SimpleEntry<>(entry.getKey(), value)))
+                .collect(Collectors.groupingBy(
+                        Map.Entry::getValue, // value becomes the key
+                        TreeMap::new, // sort result
+                        Collectors.mapping(Map.Entry::getKey, Collectors.toList()) // group associated keys in list
+                ));
+    }
+
     public void renameRomTypesInFilenames() {
-        List<Path> romFiles = FileUtils.listFiles(romDirectory);
-        romFiles.forEach(this::renameRom);
+        FileUtils.listFiles(romDirectory)
+                .forEach(this::renameRom);
     }
 
     private void renameRom(Path rom) {
@@ -75,11 +93,11 @@ public class RomOrganizer {
     }
 
     public void groupRomsByGame() {
-        List<Path> romFiles = FileUtils.listFiles(romDirectory);
-        romFiles.forEach(this::moveRomToGameDirectory);
+        FileUtils.listFiles(romDirectory)
+                .forEach(this::moveRomToGameDirectory);
 
-        List<Path> gameDirectories = FileUtils.listDirectories(romDirectory);
-        gameDirectories.forEach(this::splitGoodAndNotGoodRoms);
+        FileUtils.listDirectories(romDirectory)
+                .forEach(this::splitGoodAndNotGoodRoms);
     }
 
     private void moveRomToGameDirectory(Path rom) {
@@ -120,5 +138,27 @@ public class RomOrganizer {
         if (!condition) {
             throw new IllegalArgumentException(String.format(exceptionMessage, messageArgs));
         }
+    }
+
+    public void moveAllRomsInParentRomDirectory() {
+        FileUtils.listDirectories(romDirectory)
+                .forEach(this::moveAllRomsInParentRomDirectory);
+    }
+
+    private void moveAllRomsInParentRomDirectory(Path subDirectory) {
+        rethrowIOException(() -> Files.walkFileTree(subDirectory, new SimpleFileVisitor<Path>() {
+            @Override
+            public FileVisitResult visitFile(Path path, BasicFileAttributes basicFileAttributes) throws IOException {
+                Files.move(path, romDirectory.resolve(path.getFileName()));
+                return super.visitFile(path, basicFileAttributes);
+            }
+
+            @Override
+            public FileVisitResult postVisitDirectory(Path path, IOException e) throws IOException {
+                Files.delete(path);
+                log.info(String.format("Subdirectory '%s' processed", path));
+                return super.postVisitDirectory(path, e);
+            }
+        }));
     }
 }

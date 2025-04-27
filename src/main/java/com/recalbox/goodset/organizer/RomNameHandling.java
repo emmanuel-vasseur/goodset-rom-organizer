@@ -5,13 +5,29 @@ import com.recalbox.goodset.organizer.config.RomTypeMapping;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
+import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static java.util.Collections.emptyList;
 
 public class RomNameHandling {
+
+    public Map<String, List<String>> getRomNamesWithUnknownRomTypes(Stream<String> romNames, Function<String, List<String>> unknownRomTypesSupplier) {
+        Map<String, List<String>> romNamesWithUnknownTypes = romNames
+                .collect(Collectors.toMap(
+                        Function.identity(), // key: rom name
+                        unknownRomTypesSupplier, // value: list of unknown rom types
+                        (a, b) -> a, // keep one of both if the same rom name exists in parameter (lists equal)
+                        TreeMap::new) // sort result by rom name
+                );
+        romNamesWithUnknownTypes.values().removeIf(List::isEmpty);
+        return romNamesWithUnknownTypes;
+    }
 
     public boolean isGoodDump(String romName) {
         return romName.contains("[!]");

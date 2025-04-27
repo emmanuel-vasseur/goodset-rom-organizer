@@ -7,7 +7,6 @@ import lombok.extern.java.Log;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Function;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -115,23 +114,13 @@ public class GameListTransformer {
         return line.trim().startsWith(XML_NAME_START_TAG);
     }
 
-    public Map<String, List<String>> getRomNameUnknownRomTypes() {
-        Map<String, List<String>> romNamesWithUnknownTypes = getAllRomNames().stream()
-                .collect(Collectors.toMap(
-                        Function.identity(),
-                        romNameHandling::getGamelistUnknownRomTypes,
-                        (a, b) -> Stream.concat(a.stream(), b.stream())
-                                .collect(Collectors.toList())));
-
-        romNamesWithUnknownTypes.values()
-                .removeIf(List::isEmpty);
-        return romNamesWithUnknownTypes;
+    public Map<String, List<String>> getGamelistRomNamesWithUnknownRomTypes() {
+        return romNameHandling.getRomNamesWithUnknownRomTypes(getAllRomNames(), romNameHandling::getGamelistUnknownRomTypes);
     }
 
-    private List<String> getAllRomNames() {
+    private Stream<String> getAllRomNames() {
         return gameListContent.stream()
                 .filter(this::isXmlNameNode)
-                .map(line -> line.replaceAll(XML_NAME_TAG_REGEX, ""))
-                .collect(Collectors.toList());
+                .map(line -> line.replaceAll(XML_NAME_TAG_REGEX, "").trim());
     }
 }

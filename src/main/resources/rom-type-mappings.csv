@@ -1,12 +1,23 @@
 [!];[!];[!];[Best Version]
 ;      ;(Best);(Best Version)
-;      ;(Proto.);(Prototype)
 ;      ;(Trans.);(Translated)
-;      ;(Unl.);(Unlicensed)
 ;      ;(Alt.);(Alternate)
+;      ;(Proto.);(Prototype)
+(Unl);(Unl);(Unl);(Unlicensed)
+;          ;(Unl.);(Unlicensed)
 
 [S];[S];[S];[MasterSystem Mode]
+(VC);(VC);(VC);(Virtual Console)
+(J) (BS);(BS);;##### Remove (J) marker to avoid (JP)(JP)(BS) #####
+(BS);(JP)(BS);(BS);(BS/Satellaview)
+(NP);(NP);(NP);(Nintendo Power)
++ ST BIOS (ST);(ST);;##### Remove (BIOS) marker #####
+(ST);(JP)(ST);(ST);(Sufami Turbo)
+(NSS);(US)(NSS);(NSS);(Nintendo Super System / Arcade)
+(NG-Dump Known);(NG-Dump Known);(NG-Dump Known);(Redump Needed)
+
 (PD);(PD);(PD);(Public Domain)
+;        ;ZZZ(notgame):[bios];[Bios];
 ;        ;ZZZ(notgame):;[Not a game] ;
 
 [T+Fre;(FR)[T+Fre;(FR) [T+Fre;[French Translation;
@@ -15,16 +26,52 @@
 [T-Eng;(UK)[T-Eng;(UK) [T-Eng;[English Older Translation;
 [T+Spa;(ES)[T+Spa;(ES) [T+Spa;[Spanish Translation;
 [T-Spa;(ES)[T-Spa;(ES) [T-Spa;[Spanish Older Translation;
+[T+Ita;(IT)[T+Ita;(IT) [T+Ita;[Italian Translation;
+[T-Ita;(IT)[T-Ita;(IT) [T-Ita;[Italian Older Translation;
 [T+Ger;(DE)[T+Ger;(DE) [T+Ger;[German Translation;
 [T-Ger;(DE)[T-Ger;(DE) [T-Ger;[German Older Translation;
-[T+Bra;(BR)[T+Bra;(BR) [T+Bra;[Brazilian Translation;
-[T-Bra;(BR)[T-Bra;(BR) [T-Bra;[Brazilian Older Translation;
+[T+Bra;(PT)[T+Bra;(PT) [T+Bra;[Portuguese Translation;
+[T-Bra;(PT)[T-Bra;(PT) [T-Bra;[Portuguese Older Translation;
+[T+Fin;(FI)[T+Fin;(FI) [T+Fin;[Finnish Translation;
+[T-Fin;(FI)[T-Fin;(FI) [T-Fin;[Finnish Older Translation;
+[T+Nor;(NO)[T+Nor;(NO) [T+Nor;[Norwegian Translation;
+[T-Nor;(NO)[T-Nor;(NO) [T-Nor;[Norwegian Older Translation;
+[T+Swe;(SE)[T+Swe;(SE) [T+Swe;[Swedish Translation;
+[T+Dan;(DK)[T+Dan;(DK) [T+Dan;[Danish Translation;
+[T+Dut;(NL)[T+Dut;(NL) [T+Dut;[Dutch Translation;
+[T+Gre;(GR)[T+Gre;(GR) [T+Gre;[Greek Translation;
+[T+Lux;(LU)[T+Lux;(LU) [T+Lux;[Luxembourgish Translation;
+[T+Rum;(RO)[T+Rum;(RO) [T+Rum;[Romanian Translation;
+[T+Rom;(RO)[T+Rom;(RO) [T+Rom;[Romanian Translation;
+[T+Pol;(PL)[T+Pol;(PL) [T+Pol;[Polish Translation;
+[T+Tur;(TR)[T+Tur;(TR) [T+Tur;[Turkish Translation;
+[T+Ind;(IO)[T+Ind;(IO) [T+Ind;[Indonesian Translation;
 [T+Rus;(RU)[T+Rus;(RU) [T+Rus;[Russian Translation;
 [T-Rus;(RU)[T-Rus;(RU) [T-Rus;[Russian Older Translation;
+[T+Tha;(TH)[T+Tha;(TH) [T+Tha;[Thai Translation;
+[T-Tha;(TH)[T-Tha;(TH) [T-Tha;[Thai Older Translation;
+[T+Kor;(KR)[T+Kor;(KR) [T+Kor;[Korean Translation;
+[T-Kor;(KR)[T-Kor;(KR) [T-Kor;[Korean Older Translation;
+[T+Chi;(CN)[T+Chi;(CN) [T+Chi;[Chinese Translation;
+[T-Chi;(CN)[T-Chi;(CN) [T-Chi;[Chinese Older Translation;
+[T+ChT;(CN)[T+ChT;(CN) [T+ChT;[Chinese Translation;
+[T-ChT;(CN)[T-ChT;(CN) [T-ChT;[Chinese Older Translation;
+[T+ChS;(CN)[T+ChS;(CN) [T+ChS;[Chinese Translation;
+[T-ChS;(CN)[T-ChS;(CN) [T-ChS;[Chinese Older Translation;
+[T+Ara;[T+Ara;[T+Ara;[Arabic Translation;
+[T+Heb;[T+Heb;[T+Heb;[Hebrew Translation;
+[T+Cat;[T+Cat;[T+Cat;[Catalan Translation;
+[T+Ser;[T+Ser;[T+Ser;[Serbian Translation;
+[T+Lat;[T+Lat;[T+Lat;[Latin Translation;
 
-(JUE);(World);(World);(World)
-(JUEB);(World);[EU,US,JP];[World]
-;            ;[WOR];[World]
+(U) (Eng);(U);;##### Remove (Eng) marker #####
+(U) (eng);(U);;##### Remove (eng) marker #####
+(Eng);(U);;##### Replace (Eng) marker #####
+(eng);(U);;##### Replace (eng) marker #####
+
+(W);(W);[WOR];[World]
+(JUE);(World);[EU,US,JP];[World]
+(JUEB);(World);(World);(World)
 
 (JE);(EU)(JP);(EU) (JP);(Europe, Japan)
 (JEB);(EU)(JP);[EU,JP];[Europe, Japan]
@@ -39,9 +86,19 @@
 (EB);(EU);[EU];[Europe]
 (U);(US);(US);(USA)
 (UB);(US);[US];[USA]
+(F);(FR);(FR);(France)
+(S);(ES);(ES);(Spain)
+(G);(DE);(DE);(Germany)
+(I);(IT);(IT);(Italy)
+(D);(NL);(NL);(Netherlands)
+(Sw);(SE);(SE);(Sweden)
+(B);(BR);(BR);(Brazil)
+(A);(AU);(AU);(Australia)
+(FC);(CA);(CA);(Canada)
 (J);(JP);(JP);(Japan)
 ;       ;[JP];[Japan]
 (K);(KR);(KR);(Korea)
 ;       ;[KR];[Korea]
 (T);(TW);(TW);(Taiwan)
 ;       ;[TW];[Taiwan]
+(HK);(HK);(HK);(Hong Kong)

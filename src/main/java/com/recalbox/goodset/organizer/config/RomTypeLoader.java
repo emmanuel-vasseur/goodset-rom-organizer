@@ -39,7 +39,7 @@ public class RomTypeLoader {
     }
 
     private static List<RomTypeMapping> toRomTypeMappings(Stream<String> lines, int sourceIndex, int replacementIndex) {
-        return lines.map(line -> line.split(CSV_SEPARATOR))
+        return lines.map(line -> line.split(CSV_SEPARATOR, -1))
                 .map(lineTokens -> new RomTypeMapping(lineTokens[sourceIndex], lineTokens[replacementIndex]))
                 .filter(mapping -> !mapping.getRomTypeToken().isEmpty())
                 .collect(Collectors.toList());
