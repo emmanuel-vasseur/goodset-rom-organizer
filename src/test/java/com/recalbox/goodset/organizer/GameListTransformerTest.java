@@ -1,17 +1,15 @@
 package com.recalbox.goodset.organizer;
 
 import com.recalbox.goodset.organizer.config.ConfigProperties;
-import com.recalbox.goodset.organizer.config.RomTypeLoader;
-import com.recalbox.goodset.organizer.util.FileUtils;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
-import java.io.InputStream;
 import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
+import static com.recalbox.goodset.organizer.TestUtils.loadGameListLines;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class GameListTransformerTest {
@@ -123,8 +121,8 @@ class GameListTransformerTest {
     }
 
     private GameListTransformer createGameListTransformer(String name) {
-        InputStream gameListInputStream = RomTypeLoader.class.getResourceAsStream(name);
-        List<String> gameListContent = FileUtils.readLines(gameListInputStream).collect(Collectors.toList());
-        return new GameListTransformer(gameListContent, new RomNameHandling(), new ConfigProperties());
+        List<String> gameListLines = loadGameListLines(name);
+        return new GameListTransformer(gameListLines, new RomNameHandling(), new ConfigProperties());
     }
+
 }
