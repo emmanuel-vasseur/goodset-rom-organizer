@@ -19,7 +19,7 @@ class GameListTransformerTest {
 
         @Test
         void shouldChangeFolderImages_WhenOnlyOneRomExistsPerGame() {
-            GameListTransformer gameListTransformer = createGameListTransformer("/multiple-roms-of-one-game.gamelist.xml");
+            GameListTransformer gameListTransformer = createGameListTransformer("/multiple-games-with-one-rom.gamelist.xml");
 
             gameListTransformer.changeFolderImagesByRomImages();
             List<String> transformedContent = gameListTransformer.getGameListContent();
@@ -38,7 +38,7 @@ class GameListTransformerTest {
 
         @Test
         void shouldChangeFolderImagesByFirstRomImage_When_NoOrMultipleRomExistsPerGame() {
-            GameListTransformer gameListTransformer = createGameListTransformer("/multiple-games-with-multiple-roms.gamelist.xml");
+            GameListTransformer gameListTransformer = createGameListTransformer("/multiple-games-with-unknown-one-or-multiple-roms.gamelist.xml");
 
             gameListTransformer.changeFolderImagesByRomImages();
             List<String> transformedContent = gameListTransformer.getGameListContent();
@@ -79,7 +79,7 @@ class GameListTransformerTest {
     class GetFolderImagesTests {
         @Test
         void shouldGetFolderImagesThatWillBeReplaced_OnlyIfAssociatedRomsHasImages() {
-            GameListTransformer gameListTransformer = createGameListTransformer("/multiple-games-with-multiple-roms.gamelist.xml");
+            GameListTransformer gameListTransformer = createGameListTransformer("/multiple-games-with-unknown-one-or-multiple-roms.gamelist.xml");
 
             List<String> folderImagesThatWillBeReplaced = gameListTransformer.getFolderImagesThatWillBeReplaced();
 
@@ -93,7 +93,7 @@ class GameListTransformerTest {
 
         @Test
         void shouldGetOtherVersionFolderImagesThatWillBeReplaced() {
-            GameListTransformer gameListTransformer = createGameListTransformer("/multiple-games-with-other-versions-roms.gamelist.xml");
+            GameListTransformer gameListTransformer = createGameListTransformer("/multiple-games-with-multiple-roms.gamelist.xml");
 
             List<String> folderImagesThatWillBeReplaced = gameListTransformer.getFolderImagesThatWillBeReplaced();
 

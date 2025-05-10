@@ -69,7 +69,7 @@
 (Eng);(U);;##### Replace (Eng) marker #####
 (eng);(U);;##### Replace (eng) marker #####
 
-(W);(W);[WOR];[World]
+(W);(World);[WOR];[World]
 (JUE);(World);[EU,US,JP];[World]
 (JUEB);(World);(World);(World)
 

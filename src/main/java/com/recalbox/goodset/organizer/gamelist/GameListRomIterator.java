@@ -75,7 +75,7 @@ public class GameListRomIterator implements Iterator<RomInfo> {
     private RomInfo createRomInfo() {
         RomInfo romInfo = romInfoBuilder
                 .gameId(gameId)
-                .gamelistLines(gameLines).build();
+                .build();
         gameId = null;
         gameLines = null;
         romInfoBuilder = null;

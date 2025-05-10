@@ -14,7 +14,7 @@ class GameListRomIteratorTest {
 
     @Test
     void shouldNextIterateOverGamesWithoutHasNext() {
-        List<String> gameListLines = TestUtils.loadGameListLines("/multiple-roms-of-one-game.gamelist.xml");
+        List<String> gameListLines = TestUtils.loadGameListLines("/multiple-games-with-one-rom.gamelist.xml");
         GameListRomIterator gameListRomIterator = new GameListRomIterator(gameListLines);
 
         RomInfo firstRom = gameListRomIterator.next();
@@ -28,7 +28,7 @@ class GameListRomIteratorTest {
 
     @Test
     void shouldHasNextDoesNotIterateOverGames() {
-        List<String> gameListLines = TestUtils.loadGameListLines("/multiple-roms-of-one-game.gamelist.xml");
+        List<String> gameListLines = TestUtils.loadGameListLines("/multiple-games-with-one-rom.gamelist.xml");
         GameListRomIterator gameListRomIterator = new GameListRomIterator(gameListLines);
 
         assertThat(gameListRomIterator.hasNext()).isTrue();
@@ -45,7 +45,7 @@ class GameListRomIteratorTest {
 
     @Test
     void shouldIterateOverGamesEvenIfEndTagsDoesNotExists() {
-        List<String> gameListLines = TestUtils.loadGameListLines("/multiple-roms-of-one-game.gamelist.xml")
+        List<String> gameListLines = TestUtils.loadGameListLines("/multiple-games-with-one-rom.gamelist.xml")
                 .stream()
                 .filter(line -> !line.matches("\\s*</\\w+>\\s*"))
                 .collect(Collectors.toList());

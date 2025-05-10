@@ -1,6 +1,8 @@
 package com.recalbox.goodset.organizer;
 
 import com.recalbox.goodset.organizer.config.ConfigProperties;
+import com.recalbox.goodset.organizer.gamelist.*;
+import com.recalbox.goodset.organizer.util.Checker;
 import com.recalbox.goodset.organizer.util.FileUtils;
 import lombok.extern.java.Log;
 
@@ -29,7 +31,7 @@ public class RomOrganizer {
         this.romDirectory = Paths.get(romDirectory).toAbsolutePath().normalize();
         this.gameListFile = this.romDirectory.resolve(config.getGameListFilename());
 
-        checkArgument(Files.isDirectory(this.romDirectory), "Directory '%s' does not exits", this.romDirectory);
+        Checker.checkArgument(Files.isDirectory(this.romDirectory), "Directory '%s' does not exits", this.romDirectory);
     }
 
     public void listUnknownRomTypesInFilenames() {
@@ -129,15 +131,8 @@ public class RomOrganizer {
     }
 
     private GameListTransformer createGameListTransformer() {
-        checkArgument(Files.isRegularFile(this.gameListFile), "File '%s' does not exits", this.gameListFile);
-        List<String> gameListContent = FileUtils.readAllLines(gameListFile);
+        List<String> gameListContent = loadGameListContent();
         return new GameListTransformer(gameListContent, romNameHandling, config);
-    }
-
-    private static void checkArgument(boolean condition, String exceptionMessage, Object... messageArgs) {
-        if (!condition) {
-            throw new IllegalArgumentException(String.format(exceptionMessage, messageArgs));
-        }
     }
 
     public void moveAllRomsInParentRomDirectory() {
@@ -160,5 +155,71 @@ public class RomOrganizer {
                 return super.postVisitDirectory(path, e);
             }
         }));
+    }
+
+    public void listGamesWithDifferentNames() {
+        GameList gameList = createGameList();
+
+        gameList.getGames().stream()
+                .filter(game -> !game.isRecognizedInGameList())
+                .forEach(game -> {
+                    int romNumber = game.getRoms().size();
+                    int nameNumber = game.getNamesWithoutDecorationsFromRomPaths().size();
+                    log.info(String.format("%s different names (%s roms) in filesystem without gamelist information", nameNumber, romNumber));
+                });
+
+        Map<RomGatheredType, List<Game>> gamesWithOnlyOneRom = gameList.getGames().stream()
+                .filter(Game::isRecognizedInGameList)
+                .filter(Game::containOnlyOneRom)
+                .collect(Collectors.groupingBy(Game::getRomGatheredType));
+        Map<RomGatheredType, List<Game>> gamesWithMultipleRoms = gameList.getGames().stream()
+                .filter(Game::isRecognizedInGameList)
+                .filter(game -> !game.containOnlyOneRom())
+                .collect(Collectors.groupingBy(Game::getRomGatheredType));
+
+        log.info("** games with only one rom distribution:");
+        gamesWithOnlyOneRom.forEach((gatheredType, roms) ->
+                log.info(String.format("%s: %s games", gatheredType, roms.size())));
+        log.info("** games with multiple roms distribution:");
+        gamesWithMultipleRoms.forEach((gatheredType, roms) ->
+                log.info(String.format("%s: %s games", gatheredType, roms.size())));
+
+        gamesWithMultipleRoms.entrySet().stream()
+                .filter(entry -> !entry.getKey().isGatheredWithOnlyOneName())
+                .forEach(RomOrganizer::logGamesWithDifferentNames);
+    }
+
+    private static void logGamesWithDifferentNames(Map.Entry<RomGatheredType, List<Game>> entry) {
+        log.info("");
+        log.info("****************************************");
+        log.info("");
+        log.info(String.format("** details for %s:", entry.getKey()));
+        entry.getValue().stream()
+                .sorted(Game.GAME_NAME_GATHERED_RATIO_COMPARATOR)
+                .forEach(RomOrganizer::logGameWithDifferentNames);
+    }
+
+    private static void logGameWithDifferentNames(Game game) {
+        log.info(String.format("gameId %s", game.getGameId()));
+        logDifferentNames(game.getNamesWithoutDecorationsFromGameList(), "gamelist");
+        logDifferentNames(game.getNamesWithoutDecorationsFromRomPaths(), "filesystem");
+    }
+
+    private static void logDifferentNames(List<GameName> gameNames, String sourceType) {
+        String formattedGameNames = gameNames.stream()
+                .map(gameName -> String.format("%s (%s roms, %.2f%%)",
+                        gameName.getNameWithoutDecorations(), gameName.getAllNamesWithDecorations().size(), gameName.getGameRatio() * 100))
+                .collect(Collectors.joining(", "));
+        log.info(String.format("- %s names in %s: %s", gameNames.size(), sourceType, formattedGameNames));
+    }
+
+    private GameList createGameList() {
+        List<String> gameListContent = loadGameListContent();
+        return GameListParser.parseGameList(gameListContent);
+    }
+
+    private List<String> loadGameListContent() {
+        Checker.checkArgument(Files.isRegularFile(this.gameListFile), "File '%s' does not exits", this.gameListFile);
+        return FileUtils.readAllLines(gameListFile);
     }
 }
