@@ -99,13 +99,13 @@ public class GameListTransformer {
         return imageLinesPerFolder;
     }
 
-    public void renameRomTypes() {
-        gameListContent.replaceAll(this::replaceRomTypesInRomName);
+    public void renameRomVariations() {
+        gameListContent.replaceAll(this::replaceRomVariationsInRomName);
     }
 
-    private String replaceRomTypesInRomName(String line) {
+    private String replaceRomVariationsInRomName(String line) {
         if (isXmlNameNode(line)) {
-            return romNameHandling.replaceGamelistRomTypes(line);
+            return romNameHandling.replaceGameListRomVariations(line);
         }
         return line;
     }
@@ -114,8 +114,8 @@ public class GameListTransformer {
         return line.trim().startsWith(XML_NAME_START_TAG);
     }
 
-    public Map<String, List<String>> getGamelistRomNamesWithUnknownRomTypes() {
-        return romNameHandling.getRomNamesWithUnknownRomTypes(getAllRomNames(), romNameHandling::getGamelistUnknownRomTypes);
+    public Map<String, List<String>> getGameListRomNamesWithUnknownRomVariations() {
+        return romNameHandling.getRomNamesWithUnknownRomVariations(getAllRomNames(), romNameHandling::getGameListUnknownRomVariations);
     }
 
     private Stream<String> getAllRomNames() {

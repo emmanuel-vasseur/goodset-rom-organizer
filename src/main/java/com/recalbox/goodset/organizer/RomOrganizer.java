@@ -34,22 +34,22 @@ public class RomOrganizer {
         Checker.checkArgument(Files.isDirectory(this.romDirectory), "Directory '%s' does not exits", this.romDirectory);
     }
 
-    public void listUnknownRomTypesInFilenames() {
+    public void listUnknownRomVariationsInFilenames() {
         Stream<String> romNames = FileUtils.listFiles(romDirectory).stream().map(rom -> rom.getFileName().toString());
-        Map<String, List<String>> romNamesWithUnknownTypes = romNameHandling.getRomNamesWithUnknownRomTypes(romNames, romNameHandling::getFilenameUnknownRomTypes);
-        logRomNamesWithUnknownRomTypes(romNamesWithUnknownTypes, romDirectory);
+        Map<String, List<String>> romNamesWithUnknownVariations = romNameHandling.getRomNamesWithUnknownRomVariations(romNames, romNameHandling::getFilenameUnknownRomVariations);
+        logRomNamesWithUnknownRomVariations(romNamesWithUnknownVariations, romDirectory);
     }
 
-    public void listUnknownRomTypesInGamelist() {
+    public void listUnknownRomVariationsInGameList() {
         GameListTransformer gameListTransformer = createGameListTransformer();
-        Map<String, List<String>> romNamesWithUnknownTypes = gameListTransformer.getGamelistRomNamesWithUnknownRomTypes();
-        logRomNamesWithUnknownRomTypes(romNamesWithUnknownTypes, gameListFile);
+        Map<String, List<String>> romNamesWithUnknownVariations = gameListTransformer.getGameListRomNamesWithUnknownRomVariations();
+        logRomNamesWithUnknownRomVariations(romNamesWithUnknownVariations, gameListFile);
     }
 
-    private void logRomNamesWithUnknownRomTypes(Map<String, List<String>> romNamesWithUnknownTypes, Path location) {
-        logMapOfList(romNamesWithUnknownTypes, location, "roms with unknown rom types", "unknown types");
-        Map<String, List<String>> unknownRomTypesWithRomNames = inverseMapOfList(romNamesWithUnknownTypes);
-        logMapOfList(unknownRomTypesWithRomNames, location, "unknown rom types", "roms");
+    private void logRomNamesWithUnknownRomVariations(Map<String, List<String>> romNamesWithUnknownVariations, Path location) {
+        logMapOfList(romNamesWithUnknownVariations, location, "roms with unknown rom types", "unknown types");
+        Map<String, List<String>> unknownRomVariationsWithRomNames = inverseMapOfList(romNamesWithUnknownVariations);
+        logMapOfList(unknownRomVariationsWithRomNames, location, "unknown rom types", "roms");
     }
 
     private void logMapOfList(Map<String, List<String>> mapOfList,
@@ -76,21 +76,21 @@ public class RomOrganizer {
                 ));
     }
 
-    public void renameRomTypesInFilenames() {
+    public void renameRomVariationsInFilenames() {
         FileUtils.listFiles(romDirectory)
                 .forEach(this::renameRom);
     }
 
     private void renameRom(Path rom) {
-        String newName = romNameHandling.replaceFilenameRomTypes(rom.getFileName().toString());
+        String newName = romNameHandling.replaceFilenameRomVariations(rom.getFileName().toString());
         if (!rom.getFileName().toString().equals(newName)) {
             FileUtils.renameFileName(rom, newName);
         }
     }
 
-    public void renameRomTypesInGamelist() {
+    public void renameRomVariationsInGameList() {
         GameListTransformer gameListTransformer = createGameListTransformer();
-        gameListTransformer.renameRomTypes();
+        gameListTransformer.renameRomVariations();
         FileUtils.writeLinesIntoFile(gameListTransformer.getGameListContent(), gameListFile);
     }
 

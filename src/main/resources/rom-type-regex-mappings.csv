@@ -1,11 +1,21 @@
+# Comment, empty lines and
+;;;# empty source mappings are filtered
+# File syntax
+#regex expression;filename replacement;gamelist name replacement ($0 means no replacement)
+
+
+# Patterns found regularly
 \((Sample|PAL|NTSC|Sound Restored)\);$0;$0
-\([Vv][0-9][0-9.]*\);$0;$0
+\(Unlimited [a-zA-Z0-9 _.+,-]+\);$0;$0
+\(No [a-zA-Z0-9 _.+,-]+\);$0;$0
+\([Vv]\.?[0-9][0-9._-]* ?[a-zA-Z]*\);$0;$0
 [\[(]20\d\d-\d\d-\d\d[\])];$0;$0
 \(\d\d.\d\d\.20\d\d\);$0;$0
 \(\d\d?-\d\d?\);$0;$0
+\([bB]uild \d+\);$0;$0
+\(WIP\d*( [a-zA-Z0-9 _.-]+)?\);$0;$0
 
-\((BSZHP|Bsnes & Higan|V\.ROM|Sd2snes|SD2SNES|NES-SNES Adapter|for Super UFO Pro 8|SNESAdvance( [^)]+)?)\);$0;$0
-
+# Global regex ROM types
 \[hI\];$0;[Intro Hack]
 \[hI([\da-zA-Z+]+)\];$0;[Intro Hack ($1)]
 \[a([\da-zA-Z+]+)\];$0;[Alternate ($1)]
@@ -15,23 +25,29 @@
 \[t([\da-zA-Z+]+)\];$0;[Training ($1)]
 \[h([\da-zA-Z+]+)\];$0;[Hack ($1)]
 \[p([\da-zA-Z+]+)\];$0;[Pirate ($1)]
-
+\(M([2-8])\);$0;($1 Languages)
+## Demo, Hack & Prototypes ##
 \(([^)]+ )?(Beta|Demo|Hack|Prototype)\);$0;$0
 \((Beta|Demo|Hack|Prototype)[ -]?([^)]+)\);($1 $2);($1 $2)
 
-\(M([2-8])\);$0;($1 Languages)
+# SuperNES specifics
+\((BSZHP|Bsnes & Higan|V\.ROM|Sd2snes|SD2SNES|NES-SNES Adapter|for Super UFO Pro 8|SNESAdvance( [^)]+)?)\);$0;$0
 
+# Translations
+## 2 letters translations ##
 \[T([+-])En([^g]);(UK)[T$1Eng$2;
-
+## Translation details ##
 \[([A-Z][a-z]+( Older)?) Translation\];;[$1 Translation]
-\[([A-Z][a-z]+( Older)?) Translation[ _-]?([^\]]+)\];;[$1 Translation ($3)]
+\[([A-Z][a-z]+( Older)?) Translation[ _-]*([^(\] _-][^\]]*)\];;[$1 Translation ($3)]
+\[([A-Z][a-z]+( Older)?) Translation[ _-]*(\([^\]]*)\];;[$1 Translation $3]
 
+# Remove ROM type duplicates
 (\[[A-Z][a-z]+( Older)? Translation[^\]]*\].*?) ?\(Translated\);;$1
 (\[Best Version\].*?) ?\(Best Version\);$0;$1
 (\[Alternate \([\da-zA-Z+]+\)\].*?) ?\(Alternate\);$0;$1
 (\(Unlicensed\).*?) ?\(Unlicensed\);$0;$1
 (\(World\).*?) ?\[World\];$0;$1
-
+## Demo, Hack & Prototypes ##
 (\[Intro Hack( \([\da-zA-Z+]+\))?\].*?) ?\(Hack\);$0;$1
 (\[Hack \([\da-zA-Z+]+\)\].*?) ?\(Hack\);$0;$1
 (\(Hack( [^)]+)?\).*?) ?\(Hack\);$0;$1
@@ -42,7 +58,8 @@
 (\(([^)]+ )?Demo\).*?) ?\(Demo\);$0;$1
 (\(Prototype( [^)]+)?\).*?) ?\(Prototype\);$0;$1
 (\(([^)]+ )?Prototype\).*?) ?\(Prototype\);$0;$1
+## Countries duplicates ##
+([\[(](((World|Europe|USA|France|Spain|Germany|Italy|Netherlands|Sweden|Brazil|Australia|Canada|Japan|Korea|Taiwan|Hong Kong)(, )?)+)[\])].*?) ?[\[(]\2[\])];;$1
 
-(\((((Europe|USA|France|Spain|Germany|Italy|Netherlands|Sweden|Brazil|Australia|Canada|Japan|Korea|Taiwan|Hong Kong)(, )?)+)\).*?) ?\[\2\];;$1
-
+# Move best classifier before countries
 ([\[(](((World|Europe|USA|France|Spain|Germany|Italy|Netherlands|Sweden|Brazil|Australia|Canada|Japan|Korea|Taiwan|Hong Kong)(, )?)+)[\])].*?) ?(?<best>[\[(]Best Version[\])]);;${best} $1

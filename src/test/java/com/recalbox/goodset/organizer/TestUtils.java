@@ -1,6 +1,6 @@
 package com.recalbox.goodset.organizer;
 
-import com.recalbox.goodset.organizer.config.RomTypeLoader;
+import com.recalbox.goodset.organizer.config.RomVariationMappingsLoader;
 import com.recalbox.goodset.organizer.util.FileUtils;
 import lombok.experimental.UtilityClass;
 
@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 @UtilityClass
 public class TestUtils {
     public static List<String> loadGameListLines(String name) {
-        InputStream gameListInputStream = RomTypeLoader.class.getResourceAsStream(name);
+        InputStream gameListInputStream = RomVariationMappingsLoader.class.getResourceAsStream(name);
         return FileUtils.readLines(gameListInputStream).collect(Collectors.toList());
     }
 }
