@@ -1,7 +1,7 @@
 # Comment, empty lines and
 ;;;# empty source mappings are filtered
 # File syntax
-#filename source fragment;filename target fragment;gamelist source fragment;gamelist target fragment
+#filename source fragment;filename target fragment;gamelist source fragment;gamelist target fragment;regions
 #
 # Mapping can be partially applied
 #filename source fragment;filename target fragment;;              ; # No gamelist equivalence (or already describe on an other line)
@@ -46,10 +46,10 @@
 (Eng);(U);;
 
 # Translations - add country in filename to add the country flag in recalbox GUI
-[T+Fre;(FR)[T+Fre;(FR) [T+Fre;[French Translation;
-[T-Fre;(FR)[T-Fre;(FR) [T-Fre;[French Older Translation;
-[T+Eng;(UK)[T+Eng;(UK) [T+Eng;[English Translation;
-[T-Eng;(UK)[T-Eng;(UK) [T-Eng;[English Older Translation;
+[T+Fre;(FR)[T+Fre;(FR) [T+Fre;[French Translation;French
+[T-Fre;(FR)[T-Fre;(FR) [T-Fre;[French Older Translation;French
+[T+Eng;(UK)[T+Eng;(UK) [T+Eng;[English Translation;English
+[T-Eng;(UK)[T-Eng;(UK) [T-Eng;[English Older Translation;English
 [T+Spa;(ES)[T+Spa;(ES) [T+Spa;[Spanish Translation;
 [T-Spa;(ES)[T-Spa;(ES) [T-Spa;[Spanish Older Translation;
 [T+Ita;(IT)[T+Ita;(IT) [T+Ita;[Italian Translation;
@@ -92,57 +92,57 @@
 [T+Lat;[T+Lat;[T+Lat;[Latin Translation;
 
 # World countries
-(W);(World);[WOR];[World]
-(JUE);(World);[EU,US,JP];[World]
-(JUEB);(World);(World);(World)
+(W);(World);[WOR];[World];Europe,America,Asia
+(JUE);(World);[EU,US,JP];[World];Europe,America,Asia
+(JUEB);(World);(World);(World);Europe,America,Asia
 
 # Multiples countries/zones
-;             ;[FR,EU];[France, Europe]
-;             ;[FR,JP];[France, Japan]
-;             ;[FR,US];[France, USA]
-(JE);(EU)(JP);(EU) (JP);(Europe, Japan)
-(JEB);(EU)(JP);[EU,JP];[Europe, Japan]
-(UE);(EU)(US);(EU) (US);(Europe, USA)
-(UEB);(EU)(US);[EU,US];[Europe, USA]
-;             ;[EU,BR];[Europe, Brazil]
-;             ;[EU,DE];[Europe, Germany]
-;             ;[EU,SP];[Europe, Spain]
-(JU);(US)(JP);(US) (JP);(USA, Japan)
-;            ;[US,JP];[USA, Japan]
-;            ;[US,AU];[USA, Australia]
-;            ;[US,BR];[USA, Brazil]
-;            ;[US,CA];[USA, Canada]
-(JK);(JP)(KR);(JP) (KR);(Japan, Korea)
-;            ;[JP,KR];[Japan, Korea]
+;             ;[FR,EU];[France, Europe];France,Europe
+;             ;[FR,JP];[France, Japan];France,Asia
+;             ;[FR,US];[France, USA];France,America
+(JE);(EU)(JP);(EU) (JP);(Europe, Japan);Europe,Asia
+(JEB);(EU)(JP);[EU,JP];[Europe, Japan];Europe,Asia
+(UE);(EU)(US);(EU) (US);(Europe, USA);Europe,America
+(UEB);(EU)(US);[EU,US];[Europe, USA];Europe,America
+;             ;[EU,BR];[Europe, Brazil];Europe,America
+;             ;[EU,DE];[Europe, Germany];Europe
+;             ;[EU,SP];[Europe, Spain];Europe
+(JU);(US)(JP);(US) (JP);(USA, Japan);America,Asia
+;            ;[US,JP];[USA, Japan];America,Asia
+;            ;[US,AU];[USA, Australia];America
+;            ;[US,BR];[USA, Brazil];America
+;            ;[US,CA];[USA, Canada];America
+(JK);(JP)(KR);(JP) (KR);(Japan, Korea);Asia
+;            ;[JP,KR];[Japan, Korea];Asia
 
 # Single country/zone
-(E);(EU);(EU);(Europe)
-(EB);(EU);[EU];[Europe]
-(U);(US);(US);(USA)
-(UB);(US);[US];[USA]
-(F);(FR);(FR);(France)
-;       ;[FR];[France]
-(S);(ES);(ES);(Spain)
-;       ;[SP];[Spain]
-(G);(DE);(DE);(Germany)
-;       ;[DE];[Germany]
-(I);(IT);(IT);(Italy)
-;       ;[IT];[Italy]
-(D);(NL);(NL);(Netherlands)
-;       ;[NL];[Netherlands]
-(Sw);(SE);(SE);(Sweden)
-;        ;[SE];[Sweden]
-(B);(BR);(BR);(Brazil)
-;       ;[BR];[Brazil]
-(A);(AU);(AU);(Australia)
-;       ;[AU];[Australia]
-(FC);(CA);(CA);(Canada)
-;        ;[CA];[Canada]
-(J);(JP);(JP);(Japan)
-;       ;[JP];[Japan]
-(K);(KR);(KR);(Korea)
-;       ;[KR];[Korea]
-(T);(TW);(TW);(Taiwan)
-;       ;[TW];[Taiwan]
-(HK);(HK);(HK);(Hong Kong)
-;        ;[CN];[China]
+(E);(EU);(EU);(Europe);Europe
+(EB);(EU);[EU];[Europe];Europe
+(U);(US);(US);(USA);America
+(UB);(US);[US];[USA];America
+(F);(FR);(FR);(France);France
+;       ;[FR];[France];France
+(S);(ES);(ES);(Spain);Europe
+;       ;[SP];[Spain];Europe
+(G);(DE);(DE);(Germany);Europe
+;       ;[DE];[Germany];Europe
+(I);(IT);(IT);(Italy);Europe
+;       ;[IT];[Italy];Europe
+(D);(NL);(NL);(Netherlands);Europe
+;       ;[NL];[Netherlands];Europe
+(Sw);(SE);(SE);(Sweden);Europe
+;        ;[SE];[Sweden];Europe
+(B);(BR);(BR);(Brazil);America
+;       ;[BR];[Brazil];America
+(A);(AU);(AU);(Australia);America
+;       ;[AU];[Australia];America
+(FC);(CA);(CA);(Canada);America
+;        ;[CA];[Canada];America
+(J);(JP);(JP);(Japan);Asia
+;       ;[JP];[Japan];Asia
+(K);(KR);(KR);(Korea);Asia
+;       ;[KR];[Korea];Asia
+(T);(TW);(TW);(Taiwan);Asia
+;       ;[TW];[Taiwan];Asia
+(HK);(HK);(HK);(Hong Kong);Asia
+;        ;[CN];[China];Asia

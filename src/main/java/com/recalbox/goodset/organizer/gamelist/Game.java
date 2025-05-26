@@ -5,6 +5,8 @@ import lombok.RequiredArgsConstructor;
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import static lombok.AccessLevel.PACKAGE;
 
@@ -33,4 +35,9 @@ public class Game {
         return roms.size() == 1;
     }
 
+    public Set<String> getRegions() {
+        return getRoms().stream()
+                .flatMap(rom -> rom.getRegions().stream())
+                .collect(Collectors.toSet());
+    }
 }

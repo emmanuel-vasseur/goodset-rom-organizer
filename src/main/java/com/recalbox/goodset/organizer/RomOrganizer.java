@@ -207,8 +207,10 @@ public class RomOrganizer {
 
     private static void logDifferentNames(List<GameName> gameNames, String sourceType) {
         String formattedGameNames = gameNames.stream()
-                .map(gameName -> String.format("%s (%s roms, %.2f%%)",
-                        gameName.getNameWithoutDecorations(), gameName.getAllNamesWithDecorations().size(), gameName.getGameRatio() * 100))
+                .map(gameName -> String.format("%s (%s roms, %.2f%%, countries: %s)",
+                        gameName.getGameNameWithoutDecorations(),
+                        gameName.getAllNamesWithDecorations().size(), gameName.getGameRatio() * 100,
+                        gameName.getGameCountries()))
                 .collect(Collectors.joining(", "));
         log.info(String.format("- %s names in %s: %s", gameNames.size(), sourceType, formattedGameNames));
     }

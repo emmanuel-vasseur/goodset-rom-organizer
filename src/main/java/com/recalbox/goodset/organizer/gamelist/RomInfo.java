@@ -1,8 +1,10 @@
 package com.recalbox.goodset.organizer.gamelist;
 
+import com.recalbox.goodset.organizer.config.RomVariationMappingsLoader;
 import lombok.Builder;
 import lombok.Getter;
 
+import java.util.Set;
 import java.util.regex.Pattern;
 
 @Builder
@@ -34,4 +36,9 @@ public class RomInfo {
     public String getFileName() {
         return path.substring(path.lastIndexOf('/') + 1);
     }
+
+    public Set<String> getRegions() {
+        return RomVariationMappingsLoader.extractRegions(name);
+    }
+
 }
