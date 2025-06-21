@@ -17,11 +17,11 @@ import static java.util.Collections.emptyList;
 
 public class RomNameHandling {
 
-    public Map<String, List<String>> getRomNamesWithUnknownRomVariations(Stream<String> romNames, Function<String, List<String>> unknownRomVariationsSupplier) {
+    public Map<String, List<String>> getRomNamesWithUnknownRomVariations(Stream<String> romNames, Function<String, List<String>> unknownRomVariationsExtractor) {
         Map<String, List<String>> romNamesWithUnknownTypes = romNames
                 .collect(Collectors.toMap(
                         Function.identity(), // key: rom name
-                        unknownRomVariationsSupplier, // value: list of unknown rom types
+                        unknownRomVariationsExtractor, // value: list of unknown rom types
                         (a, b) -> a, // keep one of both if the same rom name exists in parameter (lists equal)
                         TreeMap::new) // sort result by rom name
                 );

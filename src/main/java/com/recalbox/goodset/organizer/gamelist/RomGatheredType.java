@@ -15,9 +15,7 @@ public enum RomGatheredType {
 
     private static final Set<RomGatheredType> UNIQUE_NAME_TYPES = EnumSet.of(
             SAME_UNIQUE_NAME_IN_GAMELIST_AND_PATHS,
-            DIFFERENT_UNIQUE_NAME_IN_GAMELIST_AND_PATHS,
-            UNIQUE_NAME_ONLY_IN_GAMELIST,
-            UNIQUE_NAME_ONLY_IN_PATHS
+            DIFFERENT_UNIQUE_NAME_IN_GAMELIST_AND_PATHS
     );
 
     public boolean isGatheredWithOnlyOneName() {

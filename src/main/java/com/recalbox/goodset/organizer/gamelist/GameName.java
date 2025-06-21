@@ -18,9 +18,10 @@ public class GameName {
     private final List<RomInfo> gameNameRoms;
     private final int totalNumberOfGameRoms;
 
-    public static final Comparator<GameName> RATIO_COMPARATOR = Comparator.comparingDouble(GameName::getGameRatio).reversed();
+    public static final Comparator<GameName> HIGHEST_DISTRIBUTION_RATIO_IN_GAME_COMPARATOR =
+            Comparator.comparingDouble(GameName::getDistributionRatioInGame).reversed();
 
-    public double getGameRatio() {
+    public double getDistributionRatioInGame() {
         return gameNameRoms.size() / (double) totalNumberOfGameRoms;
     }
 
@@ -34,5 +35,11 @@ public class GameName {
         return gameNameRoms.stream()
                 .flatMap(rom -> rom.getRegions().stream())
                 .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
+    }
+
+    public static GameName getGameNameWithHighestDistributionRatio(List<GameName> gameNames) {
+        return gameNames.stream().min(GameName.HIGHEST_DISTRIBUTION_RATIO_IN_GAME_COMPARATOR)
+                .orElseThrow(IllegalStateException::new);
+
     }
 }

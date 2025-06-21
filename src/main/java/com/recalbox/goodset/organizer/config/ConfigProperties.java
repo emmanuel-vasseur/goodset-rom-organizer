@@ -1,5 +1,7 @@
 package com.recalbox.goodset.organizer.config;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Properties;
 
 import static com.recalbox.goodset.organizer.util.UncheckedIOExceptionThrower.rethrowIOException;
@@ -9,6 +11,7 @@ public class ConfigProperties {
     private static final String FOLDER_IMAGES_DIRECTORY_PROPERTY = "folder-images.directory";
     private static final String LOWER_QUALITY_ROM_SUB_DIRECTORY_PROPERTY = "lower-quality-rom.directory";
     private static final String GAMELIST_FILENAME_PROPERTY = "gamelist.filename";
+    private static final String REGION_ORDER_PREFERENCE_PROPERTY = "region.order-preference";
 
     private final Properties properties = new Properties();
 
@@ -30,6 +33,10 @@ public class ConfigProperties {
 
     public String getFolderImageDirectory() {
         return properties.getProperty(FOLDER_IMAGES_DIRECTORY_PROPERTY);
+    }
+
+    public List<String> getRegionsPreferenceOrder() {
+        return Arrays.asList(properties.getProperty(REGION_ORDER_PREFERENCE_PROPERTY).split(","));
     }
 
     public String replaceProperties(String template) {

@@ -3,48 +3,24 @@ package com.recalbox.goodset.organizer.gamelist;
 import lombok.experimental.UtilityClass;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 import static com.recalbox.goodset.organizer.gamelist.RomGatheredType.*;
 import static com.recalbox.goodset.organizer.util.Checker.checkArgument;
+import static java.util.Objects.requireNonNull;
 
 @UtilityClass
 public class GameFactory {
 
-    public static Game create(int gameId, List<RomInfo> roms) {
+    public static Game create(int gameId, List<RomInfo> roms, List<String> regionsPreferenceOrder) {
+        requireNonNull(roms);
+        requireNonNull(regionsPreferenceOrder);
         checkArgument(!roms.isEmpty(), "Game must have at least one rom.");
-        List<GameName> namesWithoutDecorationsFromGameList = getNamesWithoutDecorationsFromGameList(roms);
-        List<GameName> namesWithoutDecorationsFromRomPaths = getNamesWithoutDecorationsFromRomPaths(roms);
-        RomGatheredType romsGatheredType = computeRomGatheredType(namesWithoutDecorationsFromGameList, namesWithoutDecorationsFromRomPaths);
-        return new Game(gameId, roms, romsGatheredType, namesWithoutDecorationsFromGameList, namesWithoutDecorationsFromRomPaths);
-    }
-
-    private static List<GameName> getNamesWithoutDecorationsFromGameList(List<RomInfo> roms) {
-        return getNamesWithoutDecorations(roms, GameNameType.GAMELIST);
-    }
-
-    private static List<GameName> getNamesWithoutDecorationsFromRomPaths(List<RomInfo> roms) {
-        return getNamesWithoutDecorations(roms, GameNameType.ROMPATH);
-    }
-
-    private static List<GameName> getNamesWithoutDecorations(List<RomInfo> roms,
-                                                             GameNameType gameNameType) {
-        return roms.stream()
-                .collect(Collectors.groupingBy(gameNameType.romNameWithoutDecorationsExtractor))
-                .entrySet().stream()
-                .map(entry -> createGameName(entry, gameNameType, roms.size()))
-                .sorted(GameName.RATIO_COMPARATOR)
-                .collect(Collectors.toList());
-    }
-
-    private static GameName createGameName(Map.Entry<String, List<RomInfo>> entry,
-                                           GameNameType gameNameType,
-                                           int totalNumberOfGameRoms) {
-        String nameWithoutDecorations = entry.getKey();
-        List<RomInfo> gameNameRoms = entry.getValue();
-        return new GameName(nameWithoutDecorations, gameNameType, gameNameRoms, totalNumberOfGameRoms);
+        GameNames gameListGameNames = GameNamesFactory.createGameNames(GameNameType.GAMELIST, roms, regionsPreferenceOrder);
+        GameNames romPathsGameNames = GameNamesFactory.createGameNames(GameNameType.ROMPATH, roms, regionsPreferenceOrder);
+        RomGatheredType romsGatheredType = computeRomGatheredType(gameListGameNames.getGameNameList(), romPathsGameNames.getGameNameList());
+        return new Game(gameId, roms, romsGatheredType, gameListGameNames, romPathsGameNames);
     }
 
     private static RomGatheredType computeRomGatheredType(List<GameName> namesWithoutDecorationsFromGameList,

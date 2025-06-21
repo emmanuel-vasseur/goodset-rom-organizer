@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
+import static java.util.Collections.emptyList;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class GameListParserTest {
@@ -12,7 +13,7 @@ class GameListParserTest {
     @Test
     void shouldGroupRomByGames() {
         List<String> gameListLines = TestUtils.loadGameListLines("/multiple-games-with-unknown-one-or-multiple-roms.gamelist.xml");
-        GameList games = GameListParser.parseGameList(gameListLines);
+        GameList games = GameListParser.parseGameList(gameListLines, emptyList());
         assertThat(games.getGames()).hasSize(4);
         assertThat(games.getGames()).extracting(Game::getGameId).containsExactlyInAnyOrder(0, 46279, 12885, 65246);
 

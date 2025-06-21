@@ -11,11 +11,11 @@ import java.util.stream.StreamSupport;
 @UtilityClass
 public class GameListParser {
 
-    public GameList parseGameList(List<String> gameListLines) {
+    public GameList parseGameList(List<String> gameListLines, List<String> regionsPreferenceOrder) {
         List<Game> games = parseRomInfos(gameListLines).stream()
                 .collect(Collectors.groupingBy(RomInfo::getGameId))
                 .entrySet().stream()
-                .map(romEntry -> GameFactory.create(romEntry.getKey(), romEntry.getValue()))
+                .map(romEntry -> GameFactory.create(romEntry.getKey(), romEntry.getValue(), regionsPreferenceOrder))
                 .collect(Collectors.toList());
         return new GameList(games);
     }

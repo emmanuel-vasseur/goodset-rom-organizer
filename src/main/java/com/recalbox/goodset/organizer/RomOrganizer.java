@@ -157,22 +157,23 @@ public class RomOrganizer {
         }));
     }
 
-    public void listGamesWithDifferentNames() {
+    public void listGamesNames() {
         GameList gameList = createGameList();
+        List<Game> sortedGames = gameList.getGamesSortedByNonObviousGameReferences();
 
-        gameList.getGames().stream()
+        sortedGames.stream()
                 .filter(game -> !game.isRecognizedInGameList())
                 .forEach(game -> {
                     int romNumber = game.getRoms().size();
-                    int nameNumber = game.getNamesWithoutDecorationsFromRomPaths().size();
+                    int nameNumber = game.getRomPathsGameNames().getGameNameList().size();
                     log.info(String.format("%s different names (%s roms) in filesystem without gamelist information", nameNumber, romNumber));
                 });
 
-        Map<RomGatheredType, List<Game>> gamesWithOnlyOneRom = gameList.getGames().stream()
+        Map<RomGatheredType, List<Game>> gamesWithOnlyOneRom = sortedGames.stream()
                 .filter(Game::isRecognizedInGameList)
                 .filter(Game::containOnlyOneRom)
                 .collect(Collectors.groupingBy(Game::getRomGatheredType));
-        Map<RomGatheredType, List<Game>> gamesWithMultipleRoms = gameList.getGames().stream()
+        Map<RomGatheredType, List<Game>> gamesWithMultipleRoms = sortedGames.stream()
                 .filter(Game::isRecognizedInGameList)
                 .filter(game -> !game.containOnlyOneRom())
                 .collect(Collectors.groupingBy(Game::getRomGatheredType));
@@ -194,30 +195,33 @@ public class RomOrganizer {
         log.info("****************************************");
         log.info("");
         log.info(String.format("** details for %s:", entry.getKey()));
-        entry.getValue().stream()
-                .sorted(Game.GAME_NAME_GATHERED_RATIO_COMPARATOR)
-                .forEach(RomOrganizer::logGameWithDifferentNames);
+        entry.getValue().forEach(RomOrganizer::logGameWithDifferentNames);
     }
 
     private static void logGameWithDifferentNames(Game game) {
         log.info(String.format("gameId %s", game.getGameId()));
-        logDifferentNames(game.getNamesWithoutDecorationsFromGameList(), "gamelist");
-        logDifferentNames(game.getNamesWithoutDecorationsFromRomPaths(), "filesystem");
+        logDifferentNames(game.getGameListGameNames(), "gamelist");
+        logDifferentNames(game.getRomPathsGameNames(), "filesystem");
     }
 
-    private static void logDifferentNames(List<GameName> gameNames, String sourceType) {
-        String formattedGameNames = gameNames.stream()
+    private static void logDifferentNames(GameNames gameNames, String sourceType) {
+        boolean gameNameReferenceHasHighestDistributionRatio = gameNames.gameNameReferenceHasHighestDistributionRatio();
+        String gameNameReferenceStatus = gameNameReferenceHasHighestDistributionRatio ? "reference HAS highest ratio" : "reference DONT HAVE highest ratio";
+
+        String formattedGameNames = gameNames.getGameNamesStartedByReferenceSortedByDistributionRatio().stream()
                 .map(gameName -> String.format("%s (%s roms, %.2f%%, countries: %s)",
                         gameName.getGameNameWithoutDecorations(),
-                        gameName.getAllNamesWithDecorations().size(), gameName.getGameRatio() * 100,
+                        gameName.getAllNamesWithDecorations().size(), gameName.getDistributionRatioInGame() * 100,
                         gameName.getGameCountries()))
                 .collect(Collectors.joining(", "));
-        log.info(String.format("- %s names in %s: %s", gameNames.size(), sourceType, formattedGameNames));
+
+        log.info(String.format("- %s names in %s, %s: %s",
+                gameNames.getGameNameList().size(), sourceType, gameNameReferenceStatus, formattedGameNames));
     }
 
     private GameList createGameList() {
         List<String> gameListContent = loadGameListContent();
-        return GameListParser.parseGameList(gameListContent);
+        return GameListParser.parseGameList(gameListContent, config.getRegionsPreferenceOrder());
     }
 
     private List<String> loadGameListContent() {

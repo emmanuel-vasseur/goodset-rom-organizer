@@ -3,7 +3,6 @@ package com.recalbox.goodset.organizer.gamelist;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
-import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -16,15 +15,12 @@ public class Game {
     private final int gameId;
     private final List<RomInfo> roms;
     private final RomGatheredType romGatheredType;
-    private final List<GameName> namesWithoutDecorationsFromGameList;
-    private final List<GameName> namesWithoutDecorationsFromRomPaths;
+    private final GameNames gameListGameNames;
+    private final GameNames romPathsGameNames;
 
-    public static final Comparator<Game> GAME_NAME_GATHERED_RATIO_COMPARATOR =
-            Comparator.comparingDouble(Game::getGameNameGatheredRatio).reversed();
-
-    public double getGameNameGatheredRatio() {
-        return namesWithoutDecorationsFromGameList.get(0).getGameRatio() *
-                namesWithoutDecorationsFromRomPaths.get(0).getGameRatio();
+    public double getGameNameReferenceDistributionRatio() {
+        return gameListGameNames.getGameNameReference().getDistributionRatioInGame() *
+                romPathsGameNames.getGameNameReference().getDistributionRatioInGame();
     }
 
     public boolean isRecognizedInGameList() {
@@ -40,4 +36,5 @@ public class Game {
                 .flatMap(rom -> rom.getRegions().stream())
                 .collect(Collectors.toSet());
     }
+
 }
