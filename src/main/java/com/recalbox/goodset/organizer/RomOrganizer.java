@@ -4,15 +4,13 @@ import com.recalbox.goodset.organizer.config.ConfigProperties;
 import com.recalbox.goodset.organizer.gamelist.*;
 import com.recalbox.goodset.organizer.util.Checker;
 import com.recalbox.goodset.organizer.util.FileUtils;
+import com.recalbox.goodset.organizer.util.MapUtils;
 import lombok.extern.java.Log;
 
 import java.io.IOException;
 import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
-import java.util.AbstractMap;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -161,6 +159,15 @@ public class RomOrganizer {
         GameList gameList = createGameList();
         List<Game> sortedGames = gameList.getGamesSortedByNonObviousGameReferences();
 
+        logConflictingGameNames(gameList.getConflictingGameNames(GameNameType.GAMELIST), GameNameType.GAMELIST.sourceType);
+        logConflictingGameNames(gameList.getConflictingGameNames(GameNameType.ROMPATH), GameNameType.ROMPATH.sourceType);
+        logConflictingGameNames(gameList.getConflictingGameNames(),
+                GameNameType.GAMELIST.sourceType + " merged with " + GameNameType.ROMPATH.sourceType);
+        logGamesToMerge(gameList.getGamesToMerge(GameNameType.GAMELIST), GameNameType.GAMELIST.sourceType);
+        logGamesToMerge(gameList.getGamesToMerge(GameNameType.ROMPATH), GameNameType.ROMPATH.sourceType);
+        logGamesToMerge(gameList.getGamesToMerge(),
+                GameNameType.GAMELIST.sourceType + " merged with " + GameNameType.ROMPATH.sourceType);
+
         sortedGames.stream()
                 .filter(game -> !game.isRecognizedInGameList())
                 .forEach(game -> {
@@ -190,6 +197,47 @@ public class RomOrganizer {
                 .forEach(RomOrganizer::logGamesWithDifferentNames);
     }
 
+    private static void logConflictingGameNames(Map<String, Set<Game>> conflictingGameNames, String sourceType) {
+        log.info(String.format("** games with name conflicts in %s: %s", sourceType, conflictingGameNames.size()));
+        new TreeMap<>(conflictingGameNames).forEach((k, v) ->
+                log.info(String.format("- %s in %s games: %s", k, v.size(), formatGames(v, sourceType))));
+    }
+
+    private static void logGamesToMerge(List<Set<Game>> gamesToMerge, String sourceType) {
+        log.info(String.format("** list of games to merge in %s: %s", sourceType, gamesToMerge.size()));
+        gamesToMerge.forEach(games ->
+                log.info(String.format("- %s games to merge: %s", games.size(), formatGames(games, sourceType))));
+    }
+
+    private static String formatGames(Set<Game> games, String sourceType) {
+        List<Integer> gameIds = games.stream()
+                .map(Game::getGameId)
+                .collect(Collectors.toList());
+        List<Set<String>> gameNamesList = games.stream()
+                .map(game -> getAllGameNamesWithoutDecorations(game, sourceType))
+                .collect(Collectors.toList());
+        int totalGameNames = gameNamesList.stream().mapToInt(Set::size).sum();
+        String formattedGameNamesCount = gameNamesList.stream()
+                .map(gameNames -> String.format("%s", gameNames.size()))
+                .collect(Collectors.joining(" - "));
+        String formattedGameNames = gameNamesList.stream()
+                .map(gameNames -> String.format("%s", gameNames))
+                .collect(Collectors.joining(" - "));
+        return String.format("gameIds: %s - %s total gameNames (%s): %s",
+                gameIds, totalGameNames, formattedGameNamesCount, formattedGameNames);
+    }
+
+    private static Set<String> getAllGameNamesWithoutDecorations(Game game, String sourceType) {
+        if (GameNameType.GAMELIST.sourceType.equals(sourceType)) {
+            return game.getGameListGameNames().getAllGameNamesWithoutDecorations();
+        }
+        if (GameNameType.ROMPATH.sourceType.equals(sourceType)) {
+            return game.getRomPathsGameNames().getAllGameNamesWithoutDecorations();
+        }
+        return MapUtils.mergeSets(game.getGameListGameNames().getAllGameNamesWithoutDecorations(),
+                game.getRomPathsGameNames().getAllGameNamesWithoutDecorations());
+    }
+
     private static void logGamesWithDifferentNames(Map.Entry<RomGatheredType, List<Game>> entry) {
         log.info("");
         log.info("****************************************");
@@ -200,13 +248,14 @@ public class RomOrganizer {
 
     private static void logGameWithDifferentNames(Game game) {
         log.info(String.format("gameId %s", game.getGameId()));
-        logDifferentNames(game.getGameListGameNames(), "gamelist");
-        logDifferentNames(game.getRomPathsGameNames(), "filesystem");
+        logDifferentNames(game, GameNameType.GAMELIST);
+        logDifferentNames(game, GameNameType.ROMPATH);
     }
 
-    private static void logDifferentNames(GameNames gameNames, String sourceType) {
-        boolean gameNameReferenceHasHighestDistributionRatio = gameNames.gameNameReferenceHasHighestDistributionRatio();
-        String gameNameReferenceStatus = gameNameReferenceHasHighestDistributionRatio ? "reference HAS highest ratio" : "reference DONT HAVE highest ratio";
+    private static void logDifferentNames(Game game, GameNameType gameNameType) {
+        GameNames gameNames = gameNameType.gameNamesExtractor.apply(game);
+        String gameNameReferenceStatus = gameNames.gameNameReferenceHasHighestDistributionRatio() ?
+                "reference HAS highest ratio" : "reference DONT HAVE highest ratio";
 
         String formattedGameNames = gameNames.getGameNamesStartedByReferenceSortedByDistributionRatio().stream()
                 .map(gameName -> String.format("%s (%s roms, %.2f%%, countries: %s)",
@@ -216,7 +265,7 @@ public class RomOrganizer {
                 .collect(Collectors.joining(", "));
 
         log.info(String.format("- %s names in %s, %s: %s",
-                gameNames.getGameNameList().size(), sourceType, gameNameReferenceStatus, formattedGameNames));
+                gameNames.getGameNameList().size(), gameNameType.sourceType, gameNameReferenceStatus, formattedGameNames));
     }
 
     private GameList createGameList() {

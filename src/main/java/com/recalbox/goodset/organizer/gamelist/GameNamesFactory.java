@@ -18,19 +18,19 @@ class GameNamesFactory {
 
     public static List<GameName> createGameNames(List<RomInfo> roms,
                                                  GameNameType gameNameType) {
-        return roms.stream()
-                .collect(Collectors.groupingBy(gameNameType.romNameWithoutDecorationsExtractor))
-                .entrySet().stream()
-                .map(entry -> createGameName(entry, gameNameType, roms.size()))
+        Map<String, List<RomInfo>> romsGroupedByNameWithoutDecorations = roms.stream()
+                .collect(Collectors.groupingBy(gameNameType.romNameWithoutDecorationsExtractor));
+        return romsGroupedByNameWithoutDecorations.entrySet().stream()
+                .map(entry -> createGameName(entry, gameNameType, roms))
                 .collect(Collectors.toList());
     }
 
     private static GameName createGameName(Map.Entry<String, List<RomInfo>> entry,
                                            GameNameType gameNameType,
-                                           int totalNumberOfGameRoms) {
+                                           List<RomInfo> allGameRoms) {
         String nameWithoutDecorations = entry.getKey();
         List<RomInfo> gameNameRoms = entry.getValue();
-        return new GameName(nameWithoutDecorations, gameNameType, gameNameRoms, totalNumberOfGameRoms);
+        return new GameName(nameWithoutDecorations, gameNameType, gameNameRoms, allGameRoms.size());
     }
 
     public static GameName findGameNameReference(List<GameName> gameNames, List<String> regionsPreferenceOrder) {

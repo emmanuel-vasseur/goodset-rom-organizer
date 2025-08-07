@@ -2,9 +2,7 @@ package com.recalbox.goodset.organizer.gamelist;
 
 import org.junit.jupiter.api.Test;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 import static com.recalbox.goodset.organizer.gamelist.RomGatheredType.*;
 import static java.util.Collections.emptyList;
@@ -247,6 +245,15 @@ class GameFactoryTest {
         assertThat(gameList.getGamesSortedByNonObviousGameReferences()).containsExactly(
                 game5, game1, game3, game2, game4
         );
+        assertThat(gameList.getConflictingGameNames(GameNameType.ROMPATH)).hasSize(2)
+                .containsEntry("Rom Name 1", new HashSet<>(Arrays.asList(game1, game3)))
+                .containsEntry("Rom Name 3", new HashSet<>(Arrays.asList(game2, game4)));
+        assertThat(gameList.getConflictingGameNames(GameNameType.GAMELIST)).hasSize(1)
+                .containsEntry("Rom Name 1", new HashSet<>(Arrays.asList(game1, game2, game3)));
+        Map<String, Set<Game>> conflictingGameNames = gameList.getConflictingGameNames();
+        assertThat(conflictingGameNames).hasSize(2);
+        assertThat(conflictingGameNames.get("Rom Name 1")).containsExactlyInAnyOrder(game1, game2, game3);
+        assertThat(conflictingGameNames.get("Rom Name 3")).containsExactlyInAnyOrder(game2, game4);
     }
 
     private static Game createGame(RomInfo... roms) {
