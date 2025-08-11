@@ -55,6 +55,12 @@ class GameListTransformerTest {
                     "<image>./media/images/Arcade Classics/Arcade Classics (USA) [!].png</image>",
                     "</game>",
 
+                    // Missing "ZZZ(notgame):#NONGAME" image
+                    "</game>",
+                    "</game>",
+                    "</game>",
+                    "</game>",
+
                     "<image>./media/images/5 in 1 Funpak/5 in 1 Funpak (USA) [!].png</image>",
                     "</folder>",
                     "<image>./media/folders/Alex Kidd in Miracle World.png</image>",

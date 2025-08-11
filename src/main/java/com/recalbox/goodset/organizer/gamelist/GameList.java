@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -14,6 +15,9 @@ public class GameList {
                     comparing(game -> game.getGameListGameNames().gameNameReferenceHasHighestDistributionRatio())
             .thenComparing(game -> game.getRomPathsGameNames().gameNameReferenceHasHighestDistributionRatio())
             .thenComparing(Game::getGameNameReferenceDistributionRatio);
+
+    private static final Comparator<Game> HIGHEST_ROM_GAMES_COMPARATOR = Comparator.<Game>
+            comparingInt(game -> game.getRoms().size()).reversed();
 
     private final List<Game> games;
 
@@ -30,12 +34,19 @@ public class GameList {
                 .collect(Collectors.toList());
     }
 
-    public Map<String, Set<Game>> getConflictingGameNames(GameNameType gameNameType) {
+    public List<Game> getTopGamesWithHighestRoms(int n) {
+        return games.stream()
+                .sorted(HIGHEST_ROM_GAMES_COMPARATOR)
+                .limit(n)
+                .collect(Collectors.toList());
+    }
+
+    public Map<String, Set<Game>> findConflictingGameNames(GameNameType gameNameType) {
         Map<String, Set<Game>> gamesGroupedByGameNameReference = groupGamesByGameNameReference(gameNameType);
         return MapUtils.removeEntriesWithSingleElement(gamesGroupedByGameNameReference);
     }
 
-    public Map<String, Set<Game>> getConflictingGameNames() {
+    public Map<String, Set<Game>> findConflictingGameNames() {
         Map<String, Set<Game>> mergedGroupedGames = MapUtils.mergeMaps(
                 groupGamesByGameNameReference(GameNameType.GAMELIST),
                 groupGamesByGameNameReference(GameNameType.ROMPATH));
@@ -52,41 +63,42 @@ public class GameList {
                 );
     }
 
-    public List<Set<Game>> getGamesToMerge() {
-        return getGamesToMerge(getConflictingGameNames());
+    public List<Set<Game>> findGamesToMerge() {
+        return findGamesToMerge(findConflictingGameNames());
     }
 
-    public List<Set<Game>> getGamesToMerge(GameNameType gameNameType) {
-        return getGamesToMerge(getConflictingGameNames(gameNameType));
+    public List<Set<Game>> findGamesToMerge(GameNameType gameNameType) {
+        return findGamesToMerge(findConflictingGameNames(gameNameType));
     }
 
-    private List<Set<Game>> getGamesToMerge(Map<String, Set<Game>> remainingGameNames) {
-        Map<Game, Set<String>> remainingGames = MapUtils.reverseMultiMap(remainingGameNames);
+    private List<Set<Game>> findGamesToMerge(Map<String, Set<Game>> gameNamesInMultipleGames) {
+        Map<Game, Set<String>> gamesHavingSameNames = MapUtils.reverseSetMultiMap(gameNamesInMultipleGames);
         List<Set<Game>> result = new ArrayList<>();
 
-        while (!remainingGameNames.isEmpty()) {
-            Map.Entry<String, Set<Game>> currentGamesToMerge = remainingGameNames.entrySet().iterator().next();
-            remainingGameNames.remove(currentGamesToMerge.getKey());
-            result.add(getRecursivelyGamesToMerge(
+        while (!gameNamesInMultipleGames.isEmpty()) {
+            Map.Entry<String, Set<Game>> currentGamesToMerge = gameNamesInMultipleGames.entrySet().iterator().next();
+            gameNamesInMultipleGames.remove(currentGamesToMerge.getKey());
+            result.add(findRecursivelyGamesToMerge(
                     currentGamesToMerge.getValue(),
-                    remainingGameNames,
-                    remainingGames));
+                    gameNamesInMultipleGames,
+                    gamesHavingSameNames));
         }
         return result;
     }
 
-    private Set<Game> getRecursivelyGamesToMerge(Set<Game> currentGamesToMerge,
-                                                 Map<String, Set<Game>> remainingGameNames,
-                                                 Map<Game, Set<String>> remainingGames) {
+    private Set<Game> findRecursivelyGamesToMerge(Set<Game> currentGamesToMerge,
+                                                  Map<String, Set<Game>> remainingGameNames,
+                                                  Map<Game, Set<String>> remainingGames) {
 
-        Set<String> linkedGameNames = MapUtils.getValuesOfKeys(currentGamesToMerge, remainingGames);
-        remainingGames.keySet().removeAll(currentGamesToMerge);
+        Set<Game> currentRecognizedGamesToMerge = currentGamesToMerge.stream().filter(Game::isRecognizedInGameList).collect(Collectors.toSet());
+        Set<String> linkedGameNames = MapUtils.getAllValues(currentRecognizedGamesToMerge, remainingGames);
+        remainingGames.keySet().removeAll(currentRecognizedGamesToMerge);
 
         if (linkedGameNames.isEmpty()) {
             return currentGamesToMerge;
         }
 
-        Set<Game> linkedGames = MapUtils.getValuesOfKeys(linkedGameNames, remainingGameNames);
+        Set<Game> linkedGames = MapUtils.getAllValues(linkedGameNames, remainingGameNames);
         remainingGameNames.keySet().removeAll(linkedGameNames);
 
         if (linkedGames.isEmpty()) {
@@ -94,7 +106,90 @@ public class GameList {
         }
 
         return MapUtils.mergeSets(currentGamesToMerge,
-                getRecursivelyGamesToMerge(linkedGames, remainingGameNames, remainingGames));
+                findRecursivelyGamesToMerge(linkedGames, remainingGameNames, remainingGames));
     }
 
+    public Map<String, Set<Game>> findPotentialProblematicGameNames() {
+        return findPotentialProblematicGameNames(findConflictingGameNames(), findGamesToMerge());
+    }
+
+    public Map<String, Set<Game>> findPotentialProblematicGameNames(GameNameType gameNameType) {
+        return findPotentialProblematicGameNames(findConflictingGameNames(gameNameType), findGamesToMerge(gameNameType));
+    }
+
+    private Map<String, Set<Game>> findPotentialProblematicGameNames(Map<String, Set<Game>> conflictingGameNames, List<Set<Game>> gamesToMerge) {
+        conflictingGameNames.values().removeAll(gamesToMerge);
+        return conflictingGameNames;
+    }
+
+    public List<Set<Game>> findPotentialProblematicGamesToMerge() {
+        return findPotentialProblematicGamesToMerge(findGamesToMerge(), findConflictingGameNames());
+    }
+
+    public List<Set<Game>> findPotentialProblematicGamesToMerge(GameNameType gameNameType) {
+        return findPotentialProblematicGamesToMerge(findGamesToMerge(gameNameType), findConflictingGameNames(gameNameType));
+    }
+
+    private List<Set<Game>> findPotentialProblematicGamesToMerge(List<Set<Game>> gamesToMerge, Map<String, Set<Game>> conflictingGameNames) {
+        gamesToMerge.removeAll(conflictingGameNames.values());
+        return gamesToMerge;
+    }
+
+    public Map<String, Set<Game>> findSameGameNamesWithDecoration() {
+        Map<Game, List<String>> allGameNamesWithDecoration = games.stream().collect(Collectors.toMap(
+                Function.identity(),
+                game -> game.getGameListGameNames().getAllGameNamesWithDecorations()
+        ));
+        Map<String, List<Game>> sameGameNamesWithDecoration = MapUtils.removeEntriesWithSingleElement(
+                MapUtils.reverseListMultiMap(allGameNamesWithDecoration));
+        return sameGameNamesWithDecoration.entrySet().stream()
+                .collect(Collectors.toMap(
+                        Map.Entry::getKey,
+                        e -> new HashSet<>(e.getValue())
+                ));
+    }
+
+    public Map<String, Set<Game>> findGamesHavingSameNamesWithoutDecoration() {
+        Map<String, Set<Game>> allGameNamesWithoutDecoration = MapUtils.mergeMaps(
+                getAllGameNamesWithoutDecoration(GameNameType.GAMELIST),
+                getAllGameNamesWithoutDecoration(GameNameType.ROMPATH));
+        return MapUtils.removeEntriesWithSingleElement(allGameNamesWithoutDecoration);
+    }
+
+    public Map<String, Set<Game>> findGamesHavingSameNamesWithoutDecoration(GameNameType gameNameType) {
+        Map<String, Set<Game>> allGameNamesWithoutDecoration = getAllGameNamesWithoutDecoration(gameNameType);
+        return MapUtils.removeEntriesWithSingleElement(allGameNamesWithoutDecoration);
+    }
+
+    private Map<String, Set<Game>> getAllGameNamesWithoutDecoration(GameNameType gameNameType) {
+        Map<Game, Set<String>> allGameNamesWithoutDecoration = games.stream().collect(Collectors.toMap(
+                Function.identity(),
+                game -> gameNameType.gameNamesExtractor.apply(game).getAllGameNamesWithoutDecorations()
+        ));
+        return MapUtils.reverseSetMultiMap(allGameNamesWithoutDecoration);
+    }
+
+    public List<Set<Game>> findGamesToMerge2() {
+        return findGamesToMerge(findGamesHavingSameNamesWithoutDecoration());
+    }
+
+    public List<Set<Game>> findGamesToMerge2(GameNameType gameNameType) {
+        return findGamesToMerge(findGamesHavingSameNamesWithoutDecoration(gameNameType));
+    }
+
+    public Map<String, Set<Game>> findPotentialProblematicGamesHavingSameNamesWithoutDecoration() {
+        return findPotentialProblematicGameNames(findGamesHavingSameNamesWithoutDecoration(), findGamesToMerge2());
+    }
+
+    public Map<String, Set<Game>> findPotentialProblematicGamesHavingSameNamesWithoutDecoration(GameNameType gameNameType) {
+        return findPotentialProblematicGameNames(findGamesHavingSameNamesWithoutDecoration(gameNameType), findGamesToMerge2(gameNameType));
+    }
+
+    public List<Set<Game>> findPotentialProblematicGamesToMerge2() {
+        return findPotentialProblematicGamesToMerge(findGamesToMerge2(), findGamesHavingSameNamesWithoutDecoration());
+    }
+
+    public List<Set<Game>> findPotentialProblematicGamesToMerge2(GameNameType gameNameType) {
+        return findPotentialProblematicGamesToMerge(findGamesToMerge(gameNameType), findGamesHavingSameNamesWithoutDecoration(gameNameType));
+    }
 }

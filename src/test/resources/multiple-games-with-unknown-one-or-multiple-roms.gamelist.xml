@@ -80,6 +80,42 @@
         <image>./media/images/Arcade Classics/Arcade Classics (USA) [!].png</image>
         <genreid>3840</genreid>
     </game>
+    <game id="151193" source="ScreenScraper.fr">
+        <path>./Anthrox - Bouncing Ball Trainer (Alt Music) (PD).sfc</path>
+        <name>ZZZ(notgame):#NONGAME (Alt Music) (PD) (Alt.)</name>
+        <rating>0.75</rating>
+        <releasedate/>
+        <developer>Catapult Entertainment</developer>
+        <publisher>Catapult Entertainment</publisher>
+        <hash>F9D150F2</hash>
+    </game>
+    <game id="151193" source="ScreenScraper.fr">
+        <path>./X (Beta).sfc</path>
+        <name>ZZZ(notgame):#NONGAME (Beta) [JP](Proto.)</name>
+        <rating>0.75</rating>
+        <releasedate/>
+        <developer>Catapult Entertainment</developer>
+        <publisher>Catapult Entertainment</publisher>
+        <hash>BC0D0201</hash>
+    </game>
+    <game id="151194" source="ScreenScraper.fr">
+        <path>./Super Gameboy (EU)(JP) (V1.0) [!].sfc</path>
+        <name>ZZZ(notgame):#NONGAME (EU) (JP) (V1.0) [!] [JP]</name>
+        <rating>0.75</rating>
+        <releasedate/>
+        <developer>Catapult Entertainment</developer>
+        <publisher>Catapult Entertainment</publisher>
+        <hash>2E35EDBB</hash>
+    </game>
+    <game id="151194" source="ScreenScraper.fr">
+        <path>./Super Gameboy (EU)(JP) (V1.0) [f1].sfc</path>
+        <name>ZZZ(notgame):#NONGAME (EU) (JP) (V1.0) [f1] [JP]</name>
+        <rating>0.75</rating>
+        <releasedate/>
+        <developer>Catapult Entertainment</developer>
+        <publisher>Catapult Entertainment</publisher>
+        <hash>C64955A9</hash>
+    </game>
     <folder id="0" source="ScreenScraper.fr">
         <path>./5 in 1 Funpak</path>
         <name>5 in 1 Funpak (1)</name>

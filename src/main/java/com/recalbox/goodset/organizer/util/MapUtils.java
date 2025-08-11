@@ -1,9 +1,9 @@
 package com.recalbox.goodset.organizer.util;
 
-import com.recalbox.goodset.organizer.gamelist.Game;
 import lombok.experimental.UtilityClass;
 
 import java.util.*;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -27,16 +27,25 @@ public class MapUtils {
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
     }
 
-    public static Map<Game, Set<String>> reverseMultiMap(Map<String, Set<Game>> map) {
-        return map.entrySet().stream()
-                .flatMap(entry ->
-                        entry.getValue().stream().map(game -> new AbstractMap.SimpleEntry<>(game, entry.getKey())))
-                .collect(Collectors.groupingBy(
-                        Map.Entry::getKey,
-                        Collectors.mapping(Map.Entry::getValue, Collectors.toSet())));
+    public static <K, V> Map<V, Set<K>> reverseSetMultiMap(Map<K, Set<V>> map) {
+        return reverseMultiMap(map, Collectors.toSet());
     }
 
-    public static <K, V> Set<V> getValuesOfKeys(Collection<K> keys, Map<K, Set<V>> map) {
+    public static <K, V> Map<V, List<K>> reverseListMultiMap(Map<K, List<V>> map) {
+        return reverseMultiMap(map, Collectors.toList());
+    }
+
+    private static <K, V, C extends Collection<K>> Map<V, C> reverseMultiMap(Map<K, ? extends Collection<V>> map,
+                                                                             Collector<K, ?, C> valueCollector) {
+        return map.entrySet().stream()
+                .flatMap(entry ->
+                        entry.getValue().stream().map(value -> new AbstractMap.SimpleEntry<>(value, entry.getKey())))
+                .collect(Collectors.groupingBy(
+                        Map.Entry::getKey,
+                        Collectors.mapping(Map.Entry::getValue, valueCollector)));
+    }
+
+    public static <K, V> Set<V> getAllValues(Collection<K> keys, Map<K, Set<V>> map) {
         return keys.stream()
                 .filter(map::containsKey)
                 .map(map::get)

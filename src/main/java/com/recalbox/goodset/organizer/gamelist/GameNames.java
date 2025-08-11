@@ -5,7 +5,6 @@ import lombok.RequiredArgsConstructor;
 
 import java.util.List;
 import java.util.Set;
-import java.util.TreeSet;
 import java.util.stream.Collectors;
 
 import static lombok.AccessLevel.PACKAGE;
@@ -20,7 +19,13 @@ public class GameNames {
     public Set<String> getAllGameNamesWithoutDecorations() {
         return getGameNameList().stream()
                 .map(GameName::getGameNameWithoutDecorations)
-                .collect(Collectors.toCollection(TreeSet::new));
+                .collect(Collectors.toSet());
+    }
+
+    public List<String> getAllGameNamesWithDecorations() {
+        return getGameNameList().stream()
+                .flatMap(gameName -> gameName.getAllNamesWithDecorations().stream())
+                .collect(Collectors.toList());
     }
 
     public boolean gameNameReferenceHasHighestDistributionRatio() {

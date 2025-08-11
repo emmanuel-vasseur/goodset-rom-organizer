@@ -1,6 +1,5 @@
-package com.recalbox.goodset.organizer.main;
+package com.recalbox.goodset.organizer.main.init;
 
-import com.recalbox.goodset.organizer.RomOrganizer;
 import lombok.experimental.UtilityClass;
 
 import java.util.logging.LogManager;

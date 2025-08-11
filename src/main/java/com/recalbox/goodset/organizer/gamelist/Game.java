@@ -12,6 +12,9 @@ import static lombok.AccessLevel.PACKAGE;
 @Getter
 @RequiredArgsConstructor(access = PACKAGE)
 public class Game {
+    private static final int UNKNOWN_ROM_GAME_ID = 0;
+    private static final String NONGAME_ROM_NAME = "ZZZ(notgame):#NONGAME";
+
     private final int gameId;
     private final List<RomInfo> roms;
     private final RomGatheredType romGatheredType;
@@ -24,7 +27,13 @@ public class Game {
     }
 
     public boolean isRecognizedInGameList() {
-        return gameId != 0;
+        return !isNotRecognizedInGameList();
+    }
+
+    public boolean isNotRecognizedInGameList() {
+        boolean unknownGame = gameId == UNKNOWN_ROM_GAME_ID;
+        boolean nonGame = NONGAME_ROM_NAME.equals(gameListGameNames.getGameNameReference().getGameNameWithoutDecorations());
+        return unknownGame || nonGame;
     }
 
     public boolean containOnlyOneRom() {
@@ -36,5 +45,4 @@ public class Game {
                 .flatMap(rom -> rom.getRegions().stream())
                 .collect(Collectors.toSet());
     }
-
 }

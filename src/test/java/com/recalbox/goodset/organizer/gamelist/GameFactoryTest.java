@@ -245,23 +245,47 @@ class GameFactoryTest {
         assertThat(gameList.getGamesSortedByNonObviousGameReferences()).containsExactly(
                 game5, game1, game3, game2, game4
         );
-        assertThat(gameList.getConflictingGameNames(GameNameType.ROMPATH)).hasSize(2)
+        assertThat(gameList.findConflictingGameNames(GameNameType.ROMPATH)).hasSize(2)
                 .containsEntry("Rom Name 1", new HashSet<>(Arrays.asList(game1, game3)))
                 .containsEntry("Rom Name 3", new HashSet<>(Arrays.asList(game2, game4)));
-        assertThat(gameList.getConflictingGameNames(GameNameType.GAMELIST)).hasSize(1)
+        assertThat(gameList.findConflictingGameNames(GameNameType.GAMELIST)).hasSize(1)
                 .containsEntry("Rom Name 1", new HashSet<>(Arrays.asList(game1, game2, game3)));
-        Map<String, Set<Game>> conflictingGameNames = gameList.getConflictingGameNames();
+        Map<String, Set<Game>> conflictingGameNames = gameList.findConflictingGameNames();
         assertThat(conflictingGameNames).hasSize(2);
         assertThat(conflictingGameNames.get("Rom Name 1")).containsExactlyInAnyOrder(game1, game2, game3);
         assertThat(conflictingGameNames.get("Rom Name 3")).containsExactlyInAnyOrder(game2, game4);
     }
 
+    @Test
+    void shouldGetTopGamesWithHighestRoms() {
+        Game game1 = createGame(
+                new RomInfo(1, "Rom1.rom", "Rom1", null),
+                new RomInfo(1, "Rom2.rom", "Rom2", null),
+                new RomInfo(1, "Rom3.rom", "Rom3", null)
+        );
+        Game game2 = createGame(
+                new RomInfo(2, "Rom1.rom", "Rom1", null)
+        );
+        Game game3 = createGame(
+                new RomInfo(3, "Rom1.rom", "Rom1", null),
+                new RomInfo(3, "Rom2.rom", "Rom2", null)
+        );
+
+        GameList gameList = new GameList(Arrays.asList(game1, game2, game3));
+
+        List<Game> topGames = gameList.getTopGamesWithHighestRoms(2);
+
+        assertThat(topGames).hasSize(2);
+        assertThat(topGames.get(0)).isEqualTo(game1);
+        assertThat(topGames.get(1)).isEqualTo(game3);
+    }
+
     private static Game createGame(RomInfo... roms) {
-        return GameFactory.create(123, Arrays.asList(roms), emptyList());
+        return GameFactory.create(roms[0].getGameId(), Arrays.asList(roms), emptyList());
     }
 
     private static Game createGame(List<RomInfo> roms, List<String> regionsPreferenceOrder) {
-        return GameFactory.create(123, roms, regionsPreferenceOrder);
+        return GameFactory.create(roms.get(0).getGameId(), roms, regionsPreferenceOrder);
     }
 
 }

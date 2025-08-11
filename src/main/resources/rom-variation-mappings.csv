@@ -20,6 +20,7 @@
 ## Public Domain, Utilities and BIOS ##
 (PD);(PD);(PD);(Public Domain)
 ;        ;ZZZ(notgame):[bios];[Bios];
+;        ;ZZZ(notgame):#NONGAME;[Non game];
 ;        ;ZZZ(notgame):;[Not a game] ;
 
 # MasterSystem specifics

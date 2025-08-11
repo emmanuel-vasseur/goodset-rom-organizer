@@ -1,10 +1,11 @@
 package com.recalbox.goodset.organizer.main;
 
-import static com.recalbox.goodset.organizer.main.CommandLineRunnerInitializer.createRomOrganizer;
+import static com.recalbox.goodset.organizer.main.init.CommandLineRunnerInitializer.createRomOrganizer;
 
 public class ListUnknownRomVariationsInGameList {
 
     public static void main(String... args) {
-        createRomOrganizer(args).listUnknownRomVariationsInGameList();
+        new ListUnknownRomVariations(createRomOrganizer(args))
+                .listUnknownRomVariationsInGameList();
     }
 }
